@@ -19,12 +19,14 @@ import com.git.gdsbuilder.geogig.command.transaction.EndTransaction;
 import com.git.gdsbuilder.geogig.type.GeogigTransaction;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * @author GIT
  *
  */
 @Service("transactionService")
-public class GeogigTransactionServiceImpl implements GeogigTransactionService {
+public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implements GeogigTransactionService {
 
 	/*
 	 * (non-Javadoc)

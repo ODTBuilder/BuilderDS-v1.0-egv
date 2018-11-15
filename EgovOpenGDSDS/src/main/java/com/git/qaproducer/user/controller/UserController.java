@@ -1,5 +1,7 @@
 package com.git.qaproducer.user.controller;
 
+import java.security.Principal;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,9 +32,10 @@ public class UserController {
 	
 	//로그인
 	@RequestMapping(value = "/signin.do", method = RequestMethod.GET)
-	public String signinView(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser) {
+	public String signinView(HttpServletRequest request, Principal principal) {
 		LOGGER.info("access: /signin.do");
 		String redir;
+		LoginUser loginUser = (LoginUser) principal;
 		if (loginUser != null) {
 			redir = "redirect:main.do";
 		} else {
@@ -61,9 +64,10 @@ public class UserController {
 
 	@RequestMapping(value = "/userinfo.do")
 	@ResponseBody
-	public ModelAndView userInfoView(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser)
+	public ModelAndView userInfoView(HttpServletRequest request, Principal principal)
 			throws Exception {
 		ModelAndView mav = new ModelAndView();
+		LoginUser loginUser = (LoginUser) principal;
 		if (loginUser != null) {
 			LOGGER.info("access: /userinfo.do user={}", loginUser.getUsername());
 			mav.addObject("username", loginUser.getUsername());
@@ -112,8 +116,9 @@ public class UserController {
 
 	@RequestMapping(value = "/deactivateuser.ajax")
 	@ResponseBody
-	public boolean deactivateUser(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser)
+	public boolean deactivateUser(HttpServletRequest request, Principal principal)
 			throws Exception {
+		LoginUser loginUser = (LoginUser) principal;
 		LOGGER.info("유저 비활성화 user=:{}", loginUser.getUsername());
 		boolean isDeactivated = false;
 		User user = new User();

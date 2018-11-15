@@ -54,6 +54,7 @@ import com.git.gdsbuilder.geoserver.service.en.EnLayerBboxRecalculate;
 import com.git.gdsbuilder.type.geoserver.layer.GeoLayerInfo;
 import com.vividsolutions.jts.geom.Geometry;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import it.geosolutions.geoserver.rest.encoder.GSLayerEncoder;
 import it.geosolutions.geoserver.rest.encoder.GSLayerGroupEncoder;
 import it.geosolutions.geoserver.rest.encoder.feature.GSFeatureTypeEncoder;
@@ -66,7 +67,7 @@ import it.geosolutions.geoserver.rest.manager.GeoServerRESTStyleManager;
  * @Date 2017. 5. 12. 오전 2:22:14
  */
 @Service("geoService")
-public class GeoserverServiceImpl implements GeoserverService {
+public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements GeoserverService {
 
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());

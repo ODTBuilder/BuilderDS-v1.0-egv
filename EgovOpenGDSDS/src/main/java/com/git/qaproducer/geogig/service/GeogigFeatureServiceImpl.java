@@ -33,8 +33,10 @@ import com.git.gdsbuilder.geogig.type.GeogigTransaction;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 import com.git.qaproducer.common.security.LoginUser;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 @Service("featureService")
-public class GeogigFeatureServiceImpl implements GeogigFeatureService {
+public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements GeogigFeatureService {
 
 	@Override
 	public GeogigFeatureDiff featureDiff(DTGeoserverManager geoserverManager, String repoName, String path,

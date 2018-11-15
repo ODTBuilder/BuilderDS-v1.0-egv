@@ -19,12 +19,14 @@ import com.git.gdsbuilder.geogig.tree.factory.impl.GeogigTreeFactoryImpl;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 import com.git.gdsbuilder.geoserver.data.DTGeoserverManagerList;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * @author GIT
  *
  */
 @Service("treeService")
-public class GeogigTreeBuilderServiceImpl implements GeogigTreeBuilderService {
+public class GeogigTreeBuilderServiceImpl extends EgovAbstractServiceImpl implements GeogigTreeBuilderService {
 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 

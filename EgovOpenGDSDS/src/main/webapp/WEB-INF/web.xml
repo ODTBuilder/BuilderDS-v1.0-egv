@@ -64,6 +64,23 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
+	<!-- Spring Security -->
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher
+		</listener-class>
+	</listener>
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	
     
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
@@ -78,7 +95,7 @@
 		<auth-method>BASIC</auth-method>
 	</login-config>
     
-	<error-page>
+	<!-- <error-page>
 		<exception-type>java.lang.Throwable</exception-type>
 		<location>/common/error.jsp</location>
 	</error-page>
@@ -89,6 +106,6 @@
 	<error-page>
 		<error-code>500</error-code>
 		<location>/common/error.jsp</location>
-	</error-page>
+	</error-page> -->
     
 </web-app>

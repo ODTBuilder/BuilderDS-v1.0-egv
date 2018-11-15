@@ -31,12 +31,14 @@ import com.git.gdsbuilder.geogig.type.GeogigStatus.Unmerged;
 import com.git.gdsbuilder.geogig.type.GeogigStatus.Unstaged;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * @author GIT
  *
  */
 @Service("branchService")
-public class GeogigBranchServiceImpl implements GeogigBranchService {
+public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements GeogigBranchService {
 
 	/*
 	 * (non-Javadoc)

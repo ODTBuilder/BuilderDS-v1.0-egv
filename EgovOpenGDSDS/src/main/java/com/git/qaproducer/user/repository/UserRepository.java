@@ -2,14 +2,15 @@ package com.git.qaproducer.user.repository;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.git.qaproducer.user.domain.User;
 import com.git.qaproducer.user.mapper.UserMapper;
 
+import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
+
 @Repository("userRepository")
-public class UserRepository {
+public class UserRepository extends EgovAbstractMapper {
 
 	@Resource(name="userMapper")
 	private UserMapper userMapper;

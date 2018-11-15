@@ -19,12 +19,14 @@ import com.git.gdsbuilder.geogig.type.GeogigDiff;
 import com.git.gdsbuilder.geogig.type.GeogigDiff.Diff;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * @author GIT
  *
  */
 @Service("layerService")
-public class GeogigLayerServiceImpl implements GeogigLayerService {
+public class GeogigLayerServiceImpl extends EgovAbstractServiceImpl implements GeogigLayerService {
 
 //	@Override
 //	public GeogigRepositoryLog logLayer(DTGeoserverManager geoserverManager, String repoName, String layerName,

@@ -1,5 +1,8 @@
 package com.git.qaproducer.common.security;
 
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 
@@ -14,6 +17,7 @@ public class LoginUser extends org.springframework.security.core.userdetails.Use
 	private int aid;
 	private Boolean active;
 
+	
 	public LoginUser(com.git.qaproducer.user.domain.User user) {
 		super(user.getUid(), user.getPw(), AuthorityUtils.createAuthorityList(user.getAuth()));
 		this.idx = user.getIdx();
@@ -23,7 +27,7 @@ public class LoginUser extends org.springframework.security.core.userdetails.Use
 		this.lname = user.getLname();
 		this.aid = user.getAid();
 	}
-	
+
 	public int getIdx() {
 		return idx;
 	}
@@ -70,9 +74,5 @@ public class LoginUser extends org.springframework.security.core.userdetails.Use
 
 	public void setActive(Boolean active) {
 		this.active = active;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 }

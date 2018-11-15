@@ -1,5 +1,7 @@
 package com.git.qaproducer.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -20,16 +22,17 @@ public class MainController {
 
 
 	@RequestMapping(value = "/{locale:en|ko}/locale.do", method = RequestMethod.GET)
-	public String localeMainView(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser) {
+	public String localeMainView(HttpServletRequest request, Principal principal) {
 		LOGGER.info("access: /locale.do");
 		String redir = "redirect:/main.do";
 		return redir;
 	}
 
 	@RequestMapping(value = "/main.do", method = RequestMethod.GET)
-	public ModelAndView mainView(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser) {
+	public ModelAndView mainView(HttpServletRequest request, Principal principal) {
 		LOGGER.info("access: /main.do");
 		ModelAndView mav = new ModelAndView();
+		LoginUser loginUser = (LoginUser) principal;
 		if (loginUser != null) {
 			mav.addObject("username", loginUser.getUsername());
 			mav.addObject("fname", loginUser.getFname());
@@ -46,9 +49,10 @@ public class MainController {
 	}
 
 	@RequestMapping(value = "/map.do", method = RequestMethod.GET)
-	public ModelAndView mapView(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser) {
+	public ModelAndView mapView(HttpServletRequest request, Principal principal) {
 		LOGGER.info("access: /map.do");
 		ModelAndView mav = new ModelAndView();
+		LoginUser loginUser = (LoginUser) principal;
 		if (loginUser != null) {
 			mav.addObject("username", loginUser.getUsername());
 			mav.addObject("fname", loginUser.getFname());
@@ -66,7 +70,8 @@ public class MainController {
 
 
 	@RequestMapping(value = "/settinglist.do", method = RequestMethod.GET)
-	public ModelAndView settingListView(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser) {
+	public ModelAndView settingListView(HttpServletRequest request, Principal principal) {
+		LoginUser loginUser = (LoginUser) principal;
 		LOGGER.info("access: /settinglist.do");
 		LOGGER.info("login user: {}.", loginUser);
 		ModelAndView mav = new ModelAndView();
@@ -85,7 +90,8 @@ public class MainController {
 
 
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
-	public ModelAndView errListView(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser) {
+	public ModelAndView errListView(HttpServletRequest request, Principal principal) {
+		LoginUser loginUser = (LoginUser) principal;
 		LOGGER.info("access: /list.do");
 		LOGGER.info("login user: {}.", loginUser);
 		ModelAndView mav = new ModelAndView();

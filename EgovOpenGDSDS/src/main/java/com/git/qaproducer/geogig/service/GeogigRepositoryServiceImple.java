@@ -37,12 +37,14 @@ import com.git.gdsbuilder.geogig.type.GeogigTransaction;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 import com.git.qaproducer.common.security.LoginUser;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * @author GIT
  *
  */
 @Service("reposService")
-public class GeogigRepositoryServiceImple implements GeogigRepositoryService {
+public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implements GeogigRepositoryService {
 
 	/*
 	 * (non-Javadoc)

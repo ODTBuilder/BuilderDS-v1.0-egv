@@ -35,12 +35,14 @@ import com.git.gdsbuilder.geogig.type.GeogigRevisionTree;
 import com.git.gdsbuilder.geogig.type.GeogigRevisionTree.Node;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * @author GIT
  *
  */
 @Service("test")
-public class GeogigGeoserverServiceImpl implements GeogigGeoserverService {
+public class GeogigGeoserverServiceImpl extends EgovAbstractServiceImpl implements GeogigGeoserverService {
 
 	@Override
 	public JSONObject getDataStoreList(DTGeoserverManager geoserverManager, String repoName, String branchName) {

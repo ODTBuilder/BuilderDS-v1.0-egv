@@ -48,6 +48,8 @@ import com.git.gdsbuilder.geoserver.service.wms.WMSGetFeatureInfo;
 import com.git.gdsbuilder.geoserver.service.wms.WMSGetLegendGraphic;
 import com.git.gdsbuilder.geoserver.service.wms.WMSGetMap;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * 프록시서버 요청에 대한 요청을 처리하는 클래스
  * 
@@ -55,7 +57,7 @@ import com.git.gdsbuilder.geoserver.service.wms.WMSGetMap;
  * @Date 2017. 5. 12. 오전 2:08:04
  */
 @Service("proService")
-public class GeoserverLayerProxyServiceImpl implements GeoserverLayerProxyService {
+public class GeoserverLayerProxyServiceImpl extends EgovAbstractServiceImpl implements GeoserverLayerProxyService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GeoserverLayerProxyServiceImpl.class);
 	

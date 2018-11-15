@@ -21,12 +21,14 @@ import com.git.gdsbuilder.geogig.type.GeogigCat.Subtree;
 import com.git.gdsbuilder.geogig.type.GeogigFeatureAttribute;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 
+import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
 /**
  * @author GIT
  *
  */
 @Service("objectService")
-public class GeogigObjectServiceImpl implements GeogigObjectService {
+public class GeogigObjectServiceImpl extends EgovAbstractServiceImpl implements GeogigObjectService {
 
 	@Override
 	public GeogigCat catObject(DTGeoserverManager geoserverManager, String repoName, String objectid)
