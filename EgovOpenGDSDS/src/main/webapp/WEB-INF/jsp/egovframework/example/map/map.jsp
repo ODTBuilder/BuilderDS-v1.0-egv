@@ -117,35 +117,15 @@ html {
 		</div>
 		<div class="collapse navbar-collapse" id="navbar-collapse-2">
 			<ul class="nav navbar-nav">
-				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-					aria-expanded="false" title="Save"> <i class="fas fa-save fa-lg" style="color: #4dadf7;"></i> <spring:message
-							code="lang.save" />
-				</a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#" id="savePart" data-toggle="modal" data-target="#saveChanges"><spring:message
-									code="lang.save" /></a></li>
-						<li><a href="#" id="saveAll">Save All</a></li>
-					</ul></li>
+				<li class="dropdown"><a href="#" id="savePart" data-toggle="modal" data-target="#saveChanges"> <i
+						class="fas fa-save fa-lg" style="color: #4dadf7;"></i> <spring:message code="lang.save" />
+				</a></li>
 				<li><a href="#" title="Edit" id="editTool"> <i class="fas fa-edit fa-lg" style="color: #bfbfbf;"></i> <spring:message
 							code="lang.edit" />
 				</a></li>
 				<li><a href="#" title="Base map" id="changeBase"> <i class="fas fa-map fa-lg" style="color: #91d050;"></i>
 						<spring:message code="lang.baseMap" />
 				</a></li>
-				<li><a href="#" title="Validation" id="validation"> <i class="fas fa-clipboard-check fa-lg"
-						style="color: #344762;"></i> <spring:message code="lang.validation" />
-				</a></li>
-				<!-- <li><a href="#" title="QA Status" id="qastat">
-					<i class="fas fa-th-list fa-lg" style="color: #7f7f7f;"></i>
-					QA Status</a></li> -->
-				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-					aria-expanded="false" title="Generalization"> <i class="fas fa-object-group fa-lg" style="color: #00b0f0;"></i>
-						<spring:message code="lang.generalization" />
-				</a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#" title="Generalization Process" id="gen">Generalization</a></li>
-						<li><a href="#" title="Generalization Result" id="genstat">Result</a></li>
-					</ul></li>
 				<li><a href="#" title="Version Control" id="vermodal"> <i class="fas fa-code-branch fa-lg"
 						style="color: #344762;"></i> <spring:message code="lang.versioning" />
 				</a></li>
@@ -222,7 +202,7 @@ html {
 				"createBranch" : "geogig/createBranch.do?${_csrf.parameterName}=${_csrf.token}",
 				"resolveConflict" : "geogig/resolveConflict.do?${_csrf.parameterName}=${_csrf.token}",
 				"featureBlame" : "geogig/featureBlame.do?${_csrf.parameterName}=${_csrf.token}",
-				"catFeatureObject" : "geogig/catFeatureObject.do?${_csrf.parameterName}=${_csrf.token}"
+				"catConflictFeatureObject" : "geogig/catConflictFeatureObject.do?${_csrf.parameterName}=${_csrf.token}"
 			}
 		});
 
@@ -242,16 +222,6 @@ html {
 			crs.open();
 		});
 
-		// 검수 수행 Modal 생성
-		var validation = new gb.validation.Validation({
-			"token" : urlList.token,
-			"autoOpen" : false,
-			"title" : "Validation"
-		});
-
-		$("#validation").click(function() {
-			validation.open();
-		});
 
 		var frecord = new gb.edit.FeatureRecord({
 			id : "feature_id",
@@ -294,7 +264,10 @@ html {
 
 		var fhist = new gb.versioning.Feature({
 			"url" : {
-				"featureLog" : "geogig/featureLog.do?${_csrf.parameterName}=${_csrf.token}"
+				"featureLog" : "geogig/featureLog.do?${_csrf.parameterName}=${_csrf.token}",
+				"featureDiff" : "geogig/featureDiff.do?${_csrf.parameterName}=${_csrf.token}",
+				"featureRevert" : "geogig/featureRevert.do?${_csrf.parameterName}=${_csrf.token}",
+				"catFeatureObject" : "geogig/catFeatureObject.do?${_csrf.parameterName}=${_csrf.token}"
 			}
 		});
 
@@ -319,7 +292,42 @@ html {
 		});
 
 		$("#savePart").click(function() {
-			frecord.sendWFSTTransaction(epan);
+			var row2 = $("<div>").addClass("row").append("변경사항을 저장하시겠습니까?")
+
+			var well = $("<div>").addClass("well").append(row2);
+
+			var closeBtn = $("<button>").css({
+				"float" : "right"
+			}).addClass("gb-button").addClass("gb-button-default").text("Cancel");
+			var okBtn = $("<button>").css({
+				"float" : "right"
+			}).addClass("gb-button").addClass("gb-button-primary").text("Save");
+
+			var buttonArea = $("<span>").addClass("gb-modal-buttons").append(okBtn)
+					.append(closeBtn);
+			var modalFooter = $("<div>").append(buttonArea);
+
+			var gBody = $("<div>").append(well).css({
+				"display" : "table",
+				"width" : "100%"
+			});
+			var openSaveModal = new gb.modal.Base({
+				"title" : "저장",
+				"width" : 540,
+				"height" : 250,
+				"autoOpen" : true,
+				"body" : gBody,
+				"footer" : modalFooter
+			});
+			
+			$(closeBtn).click(function() {
+				openSaveModal.close();
+			});
+			
+			$(okBtn).click(function() {
+				frecord.sendWFSTTransaction(epan);
+				openSaveModal.close();
+			});
 		});
 
 		// 거리, 면적 측정 기능 추가
@@ -409,13 +417,13 @@ html {
 			if (!layer) {
 				return;
 			}
-			
+
 			if (layer instanceof ol.layer.Image) {
 				layer.get("select").createMenuBar(gbMap.getLowerDiv());
 			} else {
 				var layers = gbMap.getUpperMap().getLayers();
 				for (var i = 0; i < layers.getLength(); i++) {
-					if(layers.item(i) instanceof ol.layer.Image){
+					if (layers.item(i) instanceof ol.layer.Image) {
 						layers.item(i).get("select").removeMenuBar();
 					}
 				}
@@ -431,8 +439,8 @@ html {
 				featureList.updateFeatureList({
 					url : urlList.getWFSFeature + urlList.token,
 					treeid : treeid,
-					geoserver : layer.get('git') ? layer.get('git').geoserver : "undefined",
-					workspace : layer.get('git') ? layer.get('git').workspace : "undefined",
+					geoserver : layer.get('git') ? layer.get('git').geoserver : undefined,
+					workspace : layer.get('git') ? layer.get('git').workspace : undefined,
 					layerName : layer.get('name')
 				});
 			}
@@ -472,7 +480,7 @@ html {
 		});
 		gbMap.getUpperMap().addControl(scaleLine);
 
-		var gitrnd = {
+		var git = {
 			resize : function() {
 				//현재 보이는 브라우저 내부 영역의 높이
 				var winHeight = $(window).innerHeight();
@@ -513,11 +521,11 @@ html {
 		}
 
 		$(window).resize(function() {
-			gitrnd.resize();
+			git.resize();
 		});
 
 		$(document).ready(function() {
-			gitrnd.resize();
+			git.resize();
 		});
 	</script>
 </body>

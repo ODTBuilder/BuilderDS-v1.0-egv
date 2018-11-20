@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import com.git.gdsbuilder.geogig.GeogigCommandException;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryInit;
 
+
 public class InitRepository {
 
 	private static final Log logger = LogFactory.getLog(InitRepository.class);

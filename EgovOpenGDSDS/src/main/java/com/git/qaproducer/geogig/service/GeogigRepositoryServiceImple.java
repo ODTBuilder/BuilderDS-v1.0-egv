@@ -50,9 +50,9 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#initRepository(
-	 * com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
-	 * com.gitrnd.qaproducer.common.security.LoginUser, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#initRepository(
+	 * com.git.gdsbuilder.geoserver.DTGeoserverManager,
+	 * com.git.qaproducer.common.security.LoginUser, java.lang.String,
 	 * java.lang.String, java.lang.String, java.lang.String, java.lang.String,
 	 * java.lang.String, java.lang.String)
 	 */
@@ -114,8 +114,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.9GeogigRepositoryService#
-	 * deleteRepository (com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
+	 * @see com.git.qaproducer.geogig.service.9GeogigRepositoryService#
+	 * deleteRepository (com.git.gdsbuilder.geoserver.DTGeoserverManager,
 	 * java.lang.String)
 	 */
 	@Override
@@ -144,8 +144,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#addRepository(
-	 * com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#addRepository(
+	 * com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String)
 	 */
 	@Override
@@ -172,10 +172,10 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#commitRepository
-	 * (com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#commitRepository
+	 * (com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String,
-	 * com.gitrnd.qaproducer.common.security.LoginUser)
+	 * com.git.qaproducer.common.security.LoginUser)
 	 */
 	@Override
 	public GeogigCommit commitRepository(DTGeoserverManager geoserverManager, String repoName, String transactionId,
@@ -205,8 +205,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#
-	 * listRemoteRepository(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
+	 * @see com.git.qaproducer.geogig.service.GeogigRepositoryService#
+	 * listRemoteRepository(com.git.gdsbuilder.geoserver.DTGeoserverManager,
 	 * java.lang.String, java.lang.Boolean)
 	 */
 	@Override
@@ -232,8 +232,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#
-	 * addRemoteRepository(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
+	 * @see com.git.qaproducer.geogig.service.GeogigRepositoryService#
+	 * addRemoteRepository(com.git.gdsbuilder.geoserver.DTGeoserverManager,
 	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -278,8 +278,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#
-	 * removeRemoteRepository(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
+	 * @see com.git.qaproducer.geogig.service.GeogigRepositoryService#
+	 * removeRemoteRepository(com.git.gdsbuilder.geoserver.DTGeoserverManager,
 	 * java.lang.String, java.lang.Boolean, java.lang.String)
 	 */
 	@Override
@@ -305,8 +305,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#
-	 * pingRemoteRepository(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
+	 * @see com.git.qaproducer.geogig.service.GeogigRepositoryService#
+	 * pingRemoteRepository(com.git.gdsbuilder.geoserver.DTGeoserverManager,
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -333,8 +333,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#pullRepository(
-	 * com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#pullRepository(
+	 * com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String, java.lang.String, java.lang.String,
 	 * java.lang.String, java.lang.String)
 	 */
@@ -366,8 +366,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#pushRepository(
-	 * com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#pushRepository(
+	 * com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -394,8 +394,8 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigRepositoryService#fetchRepository(
-	 * com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String)
+	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#fetchRepository(
+	 * com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String)
 	 */
 	@Override
 	public GeogigFetch fetchRepository(DTGeoserverManager geoserverManager, String repoName) throws JAXBException {

@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,11 +32,13 @@ public class MainController {
 	public ModelAndView mainView(HttpServletRequest request, Principal principal) {
 		LOGGER.info("access: /main.do");
 		ModelAndView mav = new ModelAndView();
-		LoginUser loginUser = (LoginUser) principal;
-		if (loginUser != null) {
-			mav.addObject("username", loginUser.getUsername());
-			mav.addObject("fname", loginUser.getFname());
-			mav.addObject("lname", loginUser.getLname());
+		if(principal!=null){
+			LoginUser loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
+			if (loginUser != null) {
+				mav.addObject("username", loginUser.getUsername());
+				mav.addObject("fname", loginUser.getFname());
+				mav.addObject("lname", loginUser.getLname());
+			}
 		}
 		mav.setViewName("/main/main");
 		String header = request.getHeader("User-Agent");
@@ -52,11 +54,13 @@ public class MainController {
 	public ModelAndView mapView(HttpServletRequest request, Principal principal) {
 		LOGGER.info("access: /map.do");
 		ModelAndView mav = new ModelAndView();
-		LoginUser loginUser = (LoginUser) principal;
-		if (loginUser != null) {
-			mav.addObject("username", loginUser.getUsername());
-			mav.addObject("fname", loginUser.getFname());
-			mav.addObject("lname", loginUser.getLname());
+		if(principal!=null){
+			LoginUser loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
+			if (loginUser != null) {
+				mav.addObject("username", loginUser.getUsername());
+				mav.addObject("fname", loginUser.getFname());
+				mav.addObject("lname", loginUser.getLname());
+			}
 		}
 		mav.setViewName("/map/map");
 		String header = request.getHeader("User-Agent");
@@ -71,13 +75,18 @@ public class MainController {
 
 	@RequestMapping(value = "/settinglist.do", method = RequestMethod.GET)
 	public ModelAndView settingListView(HttpServletRequest request, Principal principal) {
-		LoginUser loginUser = (LoginUser) principal;
 		LOGGER.info("access: /settinglist.do");
-		LOGGER.info("login user: {}.", loginUser);
+		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("username", loginUser.getUsername());
-		mav.addObject("fname", loginUser.getFname());
-		mav.addObject("lname", loginUser.getLname());
+		if(principal!=null){
+			LoginUser loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
+			if (loginUser != null) {
+				mav.addObject("username", loginUser.getUsername());
+				mav.addObject("fname", loginUser.getFname());
+				mav.addObject("lname", loginUser.getLname());
+			}
+			LOGGER.info("login user: {}.", loginUser);
+		}
 		String header = request.getHeader("User-Agent");
 		if (header != null) {
 			if (header.indexOf("Trident") > -1) {
@@ -91,13 +100,17 @@ public class MainController {
 
 	@RequestMapping(value = "/list.do", method = RequestMethod.GET)
 	public ModelAndView errListView(HttpServletRequest request, Principal principal) {
-		LoginUser loginUser = (LoginUser) principal;
 		LOGGER.info("access: /list.do");
-		LOGGER.info("login user: {}.", loginUser);
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("username", loginUser.getUsername());
-		mav.addObject("fname", loginUser.getFname());
-		mav.addObject("lname", loginUser.getLname());
+		if(principal!=null){
+			LoginUser loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
+			if (loginUser != null) {
+				mav.addObject("username", loginUser.getUsername());
+				mav.addObject("fname", loginUser.getFname());
+				mav.addObject("lname", loginUser.getLname());
+			}
+			LOGGER.info("login user: {}.", loginUser);
+		}
 		String header = request.getHeader("User-Agent");
 		if (header != null) {
 			if (header.indexOf("Trident") > -1) {

@@ -31,8 +31,8 @@ public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.GeogigTransactionService#
-	 * beginTransaction(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
+	 * @see com.git.qaproducer.geogig.service.GeogigTransactionService#
+	 * beginTransaction(com.git.gdsbuilder.geoserver.DTGeoserverManager,
 	 * java.lang.String)
 	 */
 	@Override
@@ -59,8 +59,8 @@ public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implem
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigTransactionService#endTransaction(
-	 * com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigTransactionService#endTransaction(
+	 * com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String)
 	 */
 	@Override
@@ -78,7 +78,7 @@ public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implem
 			AddRepository add = new AddRepository();
 			add.executeCommand(url, user, pw, repoName, transactionId);
 			CommitRepository commit = new CommitRepository();
-			commit.executeCommand(url, user, pw, repoName, transactionId, "test", "test", "test");
+			commit.executeCommand(url, user, pw, repoName, transactionId, "", "", "");
 			transaction = end.executeCommand(url, user, pw, repoName, transactionId);
 		} catch (GeogigCommandException e) {
 			JAXBContext jaxbContext = JAXBContext.newInstance(GeogigTransaction.class);
@@ -91,8 +91,8 @@ public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implem
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.GeogigTransactionService#
-	 * cancelTransaction(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager,
+	 * @see com.git.qaproducer.geogig.service.GeogigTransactionService#
+	 * cancelTransaction(com.git.gdsbuilder.geoserver.DTGeoserverManager,
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override

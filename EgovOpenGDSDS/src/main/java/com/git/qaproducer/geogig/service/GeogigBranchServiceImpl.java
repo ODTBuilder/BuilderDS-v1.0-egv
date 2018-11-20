@@ -72,8 +72,8 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigBranchService#statusBranch(com.
-	 * gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigBranchService#statusBranch(com.
+	 * git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -141,8 +141,8 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigBranchService#createBranch(com.
-	 * gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigBranchService#createBranch(com.
+	 * git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -168,8 +168,8 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.qaproducer.geogig.service.GeogigBranchService#listBranch(com.
-	 * gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String)
+	 * @see com.git.qaproducer.geogig.service.GeogigBranchService#listBranch(com.
+	 * git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String)
 	 */
 	@Override
 	public GeogigBranch listBranch(DTGeoserverManager geoserverManager, String repoName) throws JAXBException {
@@ -194,8 +194,8 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigBranchService#mergeBranch(com.
-	 * gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigBranchService#mergeBranch(com.
+	 * git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -222,8 +222,8 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * com.gitrnd.qaproducer.geogig.service.GeogigBranchService#resolveConflict(com.
-	 * gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
+	 * com.git.qaproducer.geogig.service.GeogigBranchService#resolveConflict(com.
+	 * git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override

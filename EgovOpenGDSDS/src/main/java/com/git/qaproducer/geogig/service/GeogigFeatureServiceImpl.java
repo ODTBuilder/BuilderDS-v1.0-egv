@@ -15,14 +15,14 @@ import javax.xml.bind.Unmarshaller;
 import org.springframework.stereotype.Service;
 
 import com.git.gdsbuilder.geogig.GeogigCommandException;
+import com.git.gdsbuilder.geogig.command.repository.DiffRepository;
 import com.git.gdsbuilder.geogig.command.repository.LogRepository;
 import com.git.gdsbuilder.geogig.command.repository.feature.FeatureBlame;
-import com.git.gdsbuilder.geogig.command.repository.feature.FeatureDiff;
 import com.git.gdsbuilder.geogig.command.repository.feature.RevertFeature;
 import com.git.gdsbuilder.geogig.command.transaction.BeginTransaction;
 import com.git.gdsbuilder.geogig.command.transaction.EndTransaction;
 import com.git.gdsbuilder.geogig.type.GeogigBlame;
-import com.git.gdsbuilder.geogig.type.GeogigFeatureDiff;
+import com.git.gdsbuilder.geogig.type.GeogigDiff;
 import com.git.gdsbuilder.geogig.type.GeogigFeatureRevert;
 import com.git.gdsbuilder.geogig.type.GeogigFeatureSimpleLog;
 import com.git.gdsbuilder.geogig.type.GeogigFeatureSimpleLog.SimpleCommit;
@@ -39,8 +39,8 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements GeogigFeatureService {
 
 	@Override
-	public GeogigFeatureDiff featureDiff(DTGeoserverManager geoserverManager, String repoName, String path,
-			int oldIndex, int newIndex) throws JAXBException {
+	public GeogigDiff featureDiff(DTGeoserverManager geoserverManager, String repoName, String path, int newIndex,
+			int oldIndex) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
 		String user = geoserverManager.getUsername();
@@ -49,21 +49,21 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 		String oldTreeish = "HEAD";
 		String newTreeish = "HEAD";
 
-		if (newIndex > 0) {
-			newTreeish += "~" + newIndex;
-		}
+//		if (newIndex > 0) {
+//			newTreeish += "~" + newIndex;
+//		}
 		oldTreeish += "~" + oldIndex;
 
-		FeatureDiff featureDiff = new FeatureDiff();
-		GeogigFeatureDiff geogigFeatureDiff = null;
+		DiffRepository diffRepos = new DiffRepository();
+		GeogigDiff geogigDiff = null;
 		try {
-			geogigFeatureDiff = featureDiff.executeCommand(url, user, pw, repoName, path, oldTreeish, newTreeish);
+			geogigDiff = diffRepos.executeCommand(url, user, pw, repoName, oldTreeish, newTreeish, path, null);
 		} catch (GeogigCommandException e) {
-			JAXBContext jaxbContext = JAXBContext.newInstance(GeogigFeatureDiff.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(GeogigDiff.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-			geogigFeatureDiff = (GeogigFeatureDiff) unmarshaller.unmarshal(new StringReader(e.getMessage()));
+			geogigDiff = (GeogigDiff) unmarshaller.unmarshal(new StringReader(e.getMessage()));
 		}
-		return geogigFeatureDiff;
+		return geogigDiff;
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 
 	@Override
 	public GeogigFeatureSimpleLog featureLog(DTGeoserverManager geoserverManager, String repoName, String path,
-			Long limit, String until, String head, Long index) throws JAXBException {
+			int limit, String until, String head, int index) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
 		String user = geoserverManager.getUsername();
@@ -99,8 +99,8 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 		try {
 			List<SimpleCommit> simpleCommits = new ArrayList<>();
 			List<Commit> commits = new ArrayList<>();
-			GeogigRepositoryLog geogigLog = logRepos.executeCommand(url, user, pw, repoName, path, limit.toString(),
-					until, true);
+			GeogigRepositoryLog geogigLog = logRepos.executeCommand(url, user, pw, repoName, path,
+					String.valueOf(limit), until, true);
 			simpleLog.setSuccess(geogigLog.getSuccess());
 			commits.addAll(geogigLog.getCommits());
 
@@ -108,7 +108,7 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 			for (int i = 0; i < commitSize; i++) {
 				Commit newCommit = commits.get(i); // current
 				SimpleCommit simpleCommit = new SimpleCommit();
-				simpleCommit.setcIdx(index + i); // idx
+				simpleCommit.setcIdx(i + index); // idx
 				String commitId = newCommit.getCommitId(); // commit id
 				simpleCommit.setCommitId(commitId);
 				simpleCommit.setAuthorName(newCommit.getAuthor().getName()); // author
@@ -118,18 +118,18 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 				DateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String dateStr = dateformat.format(date);
 
-				ChangeType changeType = ChangeType.ADDS;
+				ChangeType changeType = ChangeType.ADDED;
 				int addedCount = Integer.parseInt(newCommit.getAdds());
 				if (addedCount > 0) {
-					changeType = ChangeType.ADDS;
+					changeType = ChangeType.ADDED;
 				}
 				int removedCount = Integer.parseInt(newCommit.getRemoves());
 				if (removedCount > 0) {
-					changeType = ChangeType.REMOVES;
+					changeType = ChangeType.REMOVED;
 				}
 				int modifiedCount = Integer.parseInt(newCommit.getModifies());
 				if (modifiedCount > 0) {
-					changeType = ChangeType.MODIFIES;
+					changeType = ChangeType.MODIFIED;
 				}
 				simpleCommit.setChangeType(changeType);
 				simpleCommit.setDate(dateStr);

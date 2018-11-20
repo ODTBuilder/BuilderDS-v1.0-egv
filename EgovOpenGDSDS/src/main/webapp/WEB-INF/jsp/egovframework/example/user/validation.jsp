@@ -474,11 +474,11 @@ div.table .file-row:nth-child(odd) {
 							});
 
 							this.on("success", function(file) {
-								gitrnd.alert("success", " " + file.name + '<spring:message code="lang.successRequestValidation" />');
+								git.alert("success", " " + file.name + '<spring:message code="lang.successRequestValidation" />');
 							});
 
 							this.on("error", function(file, errorMessage) {
-								gitrnd.alert("danger", " " + errorMessage.message);
+								git.alert("danger", " " + errorMessage.message);
 							});
 
 							this.on("queuecomplete", function() {
@@ -542,7 +542,7 @@ div.table .file-row:nth-child(odd) {
 
 				});
 
-		var gitrnd = {
+		var git = {
 			alert : function(type, message) {
 				var alert = "alert-";
 				switch (type) {

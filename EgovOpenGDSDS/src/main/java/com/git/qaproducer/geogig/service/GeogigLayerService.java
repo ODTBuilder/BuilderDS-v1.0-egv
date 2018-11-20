@@ -6,6 +6,7 @@ package com.git.qaproducer.geogig.service;
 import javax.xml.bind.JAXBException;
 
 import com.git.gdsbuilder.geogig.type.GeogigDiff;
+import com.git.gdsbuilder.geogig.type.GeogigRepositoryLog;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 
 /**

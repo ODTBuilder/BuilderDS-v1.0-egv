@@ -89,10 +89,10 @@
 				});
 			});
 
-			gitrnd.retrieveSettingList();
+			git.retrieveSettingList();
 		});
 
-		var gitrnd = {
+		var git = {
 			"alert" : function(type, message) {
 				var alert = "alert-";
 				switch (type) {

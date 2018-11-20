@@ -7,6 +7,7 @@ import javax.xml.bind.JAXBException;
 
 import com.git.gdsbuilder.geogig.type.GeogigAdd;
 import com.git.gdsbuilder.geogig.type.GeogigCommit;
+import com.git.gdsbuilder.geogig.type.GeogigDelete;
 import com.git.gdsbuilder.geogig.type.GeogigFetch;
 import com.git.gdsbuilder.geogig.type.GeogigPull;
 import com.git.gdsbuilder.geogig.type.GeogigPush;

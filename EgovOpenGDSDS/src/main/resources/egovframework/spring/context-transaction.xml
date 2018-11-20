@@ -22,7 +22,7 @@
 	</aop:config> -->
 
 	<!-- 추가 -->
-	<tx:advice id="txAdvice" transaction-manager="adminTransactionManager">
+	<tx:advice id="txAdvice" transaction-manager="userTransactionManager">
 		<tx:attributes>
 			<tx:method name="*" rollback-for="Exception" />
 			<!-- <tx:method name="insert*" rollback-for="Exception" /> <tx:method 

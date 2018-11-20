@@ -56,7 +56,7 @@
         <property name="paramName" value="language" />
     </bean>
 
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+   <!--  <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
         <property name="defaultErrorView" value="cmmn/egovError"/>
         <property name="exceptionMappings">
             <props>
@@ -66,12 +66,18 @@
                 <prop key="org.springframework.security.AccessDeniedException">cmmn/egovError</prop>
             </props>
         </property>
-    </bean>
+    </bean> -->
 
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
 	    p:viewClass="org.springframework.web.servlet.view.JstlView"
 	    p:prefix="/WEB-INF/jsp/egovframework/example/" p:suffix=".jsp"/>
 
+
+ 	<mvc:annotation-driven>
+	  <mvc:argument-resolvers>
+	    <bean class="org.springframework.security.web.method.annotation.AuthenticationPrincipalArgumentResolver" />
+	  </mvc:argument-resolvers>
+	</mvc:annotation-driven>
 
 
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>

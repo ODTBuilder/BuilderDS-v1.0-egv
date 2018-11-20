@@ -31,6 +31,7 @@ import java.util.Enumeration;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -139,7 +140,7 @@ public class GeoserverLayerProxyServiceImpl extends EgovAbstractServiceImpl impl
 			} else if (key.toLowerCase().equals("sld")) {
 				sld = value;
 			} else if (key.toLowerCase().equals("sld_body")) {
-				sld_body = value;
+				sld_body = StringEscapeUtils.unescapeHtml3(value);
 			}
 		}
 		return new WMSGetMap(serverURL, version, format, layers, tiled, transparent, bgcolor, crs, srs, bbox, width, height,

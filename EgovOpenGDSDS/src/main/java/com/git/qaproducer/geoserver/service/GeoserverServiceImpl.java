@@ -130,7 +130,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @param datastore
 	 * @param request
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#shpCollectionPublishGeoserver(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String, java.lang.String, org.springframework.web.multipart.MultipartHttpServletRequest)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#shpCollectionPublishGeoserver(com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String, java.lang.String, org.springframework.web.multipart.MultipartHttpServletRequest)
 	 */
 	@Override
 	public int shpCollectionPublishGeoserver(DTGeoserverManager dtGeoManager, String workspace, String datastore,
@@ -290,7 +290,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @param dtGeoManagers
 	 * @param serverName
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#getGeoserverLayerCollectionTree(com.gitrnd.gdsbuilder.geoserver.data.DTGeoserverManagerList, java.lang.String)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#getGeoserverLayerCollectionTree(com.git.gdsbuilder.geoserver.data.DTGeoserverManagerList, java.lang.String)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -328,7 +328,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @author SG.Lee
 	 * @param dtGeoserverMList
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#getGeoserverLayerCollectionTree(com.gitrnd.gdsbuilder.geoserver.data.DTGeoserverManagerList)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#getGeoserverLayerCollectionTree(com.git.gdsbuilder.geoserver.data.DTGeoserverManagerList)
 	 */
 	@SuppressWarnings("unchecked")
 	public JSONArray getGeoserverLayerCollectionTrees(DTGeoserverManagerList dtGeoserverMList){
@@ -362,7 +362,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @param workspace
 	 * @param layerList
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#duplicateCheck(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String, java.util.ArrayList)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#duplicateCheck(com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String, java.util.ArrayList)
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -388,7 +388,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @param workspace
 	 * @param layerList
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#getGeoLayerList(com.gitrnd.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String, java.util.ArrayList)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#getGeoLayerList(com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String, java.util.ArrayList)
 	 */
 	@Override
 	public DTGeoLayerList getGeoLayerList(DTGeoserverManager dtGeoManager, String workspace, ArrayList<String> layerList) {
@@ -423,7 +423,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @author SG.Lee
 	 * @param groupList
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#getGeoGroupLayerList(java.util.ArrayList)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#getGeoGroupLayerList(java.util.ArrayList)
 	 */
 	@Override
 	public DTGeoGroupLayerList getGeoGroupLayerList(DTGeoserverManager dtGeoManager, String workspace, ArrayList<String> groupList) {
@@ -446,7 +446,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @author SG.Lee
 	 * @param layerName
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#removeGeoserverLayer(java.lang.String)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#removeGeoserverLayer(java.lang.String)
 	 */
 	@Override
 	public boolean removeDTGeoserverLayer(DTGeoserverManager dtGeoManager, String workspace, String dsName, String groupLayerName, String layerName) {
@@ -496,7 +496,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @param workspace
 	 * @param layerNameList
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#removeDTGeoserverLayers(java.lang.String, java.util.List)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#removeDTGeoserverLayers(java.lang.String, java.util.List)
 	 */
 	@Override
 	public int removeDTGeoserverLayers(DTGeoserverManager dtGeoManager, String workspace, List<String> layerNameList) {
@@ -521,7 +521,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @author SG.Lee
 	 * @param groupLayerName
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#removeGeoserverGroupLayer(java.lang.String)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#removeGeoserverGroupLayer(java.lang.String)
 	 */
 	@Override
 	public boolean removeDTGeoserverAllLayer(DTGeoserverManager dtGeoManager, String workspace, String dsName, String groupLayerName) {
@@ -581,7 +581,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @param sldBody
 	 * @param name
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#publishStyle(java.lang.String,
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#publishStyle(java.lang.String,
 	 *      java.lang.String)
 	 */
 	@Override
@@ -601,7 +601,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @param sldBody
 	 * @param name
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#updateStyle(java.lang.String,
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#updateStyle(java.lang.String,
 	 *      java.lang.String)
 	 */
 	@Override
@@ -620,7 +620,7 @@ public class GeoserverServiceImpl extends EgovAbstractServiceImpl implements Geo
 	 * @author SG.Lee
 	 * @param styleName
 	 * @return
-	 * @see com.gitrnd.qaproducer.geoserver.service.GeoserverService#removeStyle(java.lang.String)
+	 * @see com.git.qaproducer.geoserver.service.GeoserverService#removeStyle(java.lang.String)
 	 */
 	@Override
 	public boolean removeStyle(DTGeoserverManager dtGeoManager, String styleName) {

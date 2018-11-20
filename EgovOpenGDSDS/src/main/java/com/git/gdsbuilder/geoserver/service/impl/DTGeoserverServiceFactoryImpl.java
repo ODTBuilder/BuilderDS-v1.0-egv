@@ -11,7 +11,7 @@ import com.git.gdsbuilder.geoserver.service.wms.WMSGetMap;
 public class DTGeoserverServiceFactoryImpl implements DTGeoserverServiceFactory {
 	
 	/**
-	 * @see com.gitrnd.gdsbuilder.geoserver.service.factory.DTGeoserverServiceFactory#createWFSGetFeature(java.lang.String, java.lang.String, java.lang.String, com.gitrnd.gdsbuilder.geoserver.service.en.EnWFSOutputFormat, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 * @see com.git.gdsbuilder.geoserver.service.factory.DTGeoserverServiceFactory#createWFSGetFeature(java.lang.String, java.lang.String, java.lang.String, com.git.gdsbuilder.geoserver.service.en.EnWFSOutputFormat, int, java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public WFSGetFeature createWFSGetFeature(String serverURL, String version, String typeName, EnWFSOutputFormat outputformat, int maxFeatures, String bbox,
@@ -20,7 +20,7 @@ public class DTGeoserverServiceFactoryImpl implements DTGeoserverServiceFactory 
 	};
 	
 	/**
-	 * @see com.gitrnd.gdsbuilder.geoserver.service.factory.DTGeoserverServiceFactory#createWFSGetFeature(java.lang.String, java.lang.String, java.lang.String)
+	 * @see com.git.gdsbuilder.geoserver.service.factory.DTGeoserverServiceFactory#createWFSGetFeature(java.lang.String, java.lang.String, java.lang.String)
 	 */
 	@Override
 	public WFSGetFeature createWFSGetFeature(String serverURL, String version, String typeName){

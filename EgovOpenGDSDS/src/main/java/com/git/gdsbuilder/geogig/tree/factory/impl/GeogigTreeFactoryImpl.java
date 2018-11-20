@@ -20,10 +20,10 @@ public class GeogigTreeFactoryImpl implements GeogigTreeFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.gdsbuilder.geogig.tree.factory.GeogigTreeFactory#
-	 * createGeogigRepositoryTree(com.gitrnd.gdsbuilder.geoserver.data.
+	 * @see com.git.gdsbuilder.geogig.tree.factory.GeogigTreeFactory#
+	 * createGeogigRepositoryTree(com.git.gdsbuilder.geoserver.data.
 	 * DTGeoserverManagerList,
-	 * com.gitrnd.gdsbuilder.geogig.tree.GeogigRepositoryTree.
+	 * com.git.gdsbuilder.geogig.tree.GeogigRepositoryTree.
 	 * EnGeogigRepositoryTreeType)
 	 */
 	public GeogigRepositoryTree createGeogigRepositoryTree(DTGeoserverManagerList dtGeoManagers,
@@ -34,10 +34,10 @@ public class GeogigTreeFactoryImpl implements GeogigTreeFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.gdsbuilder.geogig.tree.factory.GeogigTreeFactory#
-	 * createGeogigRepositoryTree(com.gitrnd.gdsbuilder.geoserver.
+	 * @see com.git.gdsbuilder.geogig.tree.factory.GeogigTreeFactory#
+	 * createGeogigRepositoryTree(com.git.gdsbuilder.geoserver.
 	 * DTGeoserverManager, java.lang.String,
-	 * com.gitrnd.gdsbuilder.geogig.tree.GeogigRepositoryTree.
+	 * com.git.gdsbuilder.geogig.tree.GeogigRepositoryTree.
 	 * EnGeogigRepositoryTreeType, java.lang.String, java.lang.String)
 	 */
 	public GeogigRepositoryTree createGeogigRepositoryTree(DTGeoserverManager dtGeoserver, String serverName,
@@ -48,10 +48,10 @@ public class GeogigTreeFactoryImpl implements GeogigTreeFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.gitrnd.gdsbuilder.geogig.tree.factory.GeogigTreeFactory#
-	 * createGeogigRemoteRepositoryTree(com.gitrnd.gdsbuilder.geoserver.
+	 * @see com.git.gdsbuilder.geogig.tree.factory.GeogigTreeFactory#
+	 * createGeogigRemoteRepositoryTree(com.git.gdsbuilder.geoserver.
 	 * DTGeoserverManager, java.lang.String,
-	 * com.gitrnd.gdsbuilder.geogig.tree.GeogigRepositoryTree.
+	 * com.git.gdsbuilder.geogig.tree.GeogigRepositoryTree.
 	 * EnGeogigRepositoryTreeType, java.lang.String)
 	 */
 	@Override

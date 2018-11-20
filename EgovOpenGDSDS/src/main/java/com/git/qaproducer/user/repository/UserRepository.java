@@ -2,6 +2,7 @@ package com.git.qaproducer.user.repository;
 
 import javax.annotation.Resource;
 
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import com.git.qaproducer.user.domain.User;
@@ -12,8 +13,12 @@ import egovframework.rte.psl.dataaccess.EgovAbstractMapper;
 @Repository("userRepository")
 public class UserRepository extends EgovAbstractMapper {
 
+		
 	@Resource(name="userMapper")
 	private UserMapper userMapper;
+	
+	
+
 
 	public User retrieveUserById(String uid) {
 		return userMapper.retrieveUserById(uid);

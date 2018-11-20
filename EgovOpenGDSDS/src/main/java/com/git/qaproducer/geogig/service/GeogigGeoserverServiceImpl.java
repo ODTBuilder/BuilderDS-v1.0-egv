@@ -118,7 +118,7 @@ public class GeogigGeoserverServiceImpl extends EgovAbstractServiceImpl implemen
 		String pw = geoserverManager.getPassword();
 
 		// get crs
-		String crs = "";
+		String crs = null;
 		LsTreeRepository lsTreeRepos = new LsTreeRepository();
 		GeogigRevisionTree geogigLsTree = lsTreeRepos.executeCommand(url, user, pw, repoName, branchName, true);
 		List<Node> nodeList = geogigLsTree.getNodes();

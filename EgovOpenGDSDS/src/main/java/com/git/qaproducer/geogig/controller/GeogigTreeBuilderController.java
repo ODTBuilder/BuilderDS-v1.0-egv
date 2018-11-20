@@ -3,12 +3,14 @@
  */
 package com.git.qaproducer.geogig.controller;
 
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,12 +47,16 @@ public class GeogigTreeBuilderController extends AbstractController {
 	 */
 	@RequestMapping(value = "/getWorkingTree.ajax")
 	@ResponseBody
-	public JSONArray getWorkingTree(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser,
+	public JSONArray getWorkingTree(HttpServletRequest request, Principal principal,
 			@RequestParam(value = "node", required = false) String node,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "transactionId", required = false) String transactionId) {
 
+		LoginUser loginUser = null;
+		if(principal!=null){
+			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
+		}
 		EnGeogigRepositoryTreeType enType = null;
 
 		if (type.equals(EnGeogigRepositoryTreeType.SERVER.getType())) {
@@ -80,13 +86,18 @@ public class GeogigTreeBuilderController extends AbstractController {
 	 */
 	@RequestMapping(value = "/getRemoteRepoTree.ajax")
 	@ResponseBody
-	public JSONArray getRemoteRepoTree(HttpServletRequest request, @AuthenticationPrincipal LoginUser loginUser,
+	public JSONArray getRemoteRepoTree(HttpServletRequest request, Principal principal,
 			@RequestParam(value = "node", required = false) String node,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "local", required = false) String local,
 			@RequestParam(value = "fetch", required = false) boolean fetch) {
 
+		LoginUser loginUser = null;
+		if(principal!=null){
+			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
+		}
+		
 		EnGeogigRemoteRepositoryTreeType enType = null;
 
 		if (type.equals(EnGeogigRemoteRepositoryTreeType.REMOTEREPOSITORY.getType())) {

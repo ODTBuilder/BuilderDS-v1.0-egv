@@ -19,6 +19,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.git.gdsbuilder.geogig.GeogigCommandException;
+import com.git.gdsbuilder.geogig.type.GeogigDelete;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryDelete;
 
 public class DeleteRepository {
@@ -55,16 +56,12 @@ public class DeleteRepository {
 		ResponseEntity<GeogigRepositoryDelete> responseEntity = null;
 		try {
 			responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, GeogigRepositoryDelete.class);
-		} catch (Exception e) {
-			logger.error(e.getMessage());
+		} catch (HttpClientErrorException e) {
+			throw new GeogigCommandException(e.getResponseBodyAsString(), e.getStatusCode());
+		} catch (HttpServerErrorException e) {
+			throw new GeogigCommandException(e.getResponseBodyAsString(), e.getStatusCode());
 		}
-		if (responseEntity != null) {
-			HttpStatus statusCode = responseEntity.getStatusCode();
-			logger.info(responseEntity.getStatusCode() + ":" + statusCode.getReasonPhrase());
-			return responseEntity.getBody();
-		} else {
-			return null;
-		}
+		return responseEntity.getBody();
 	}
 
 	public void executeDeleteCommand(String baseURL, String username, String password, String repository,

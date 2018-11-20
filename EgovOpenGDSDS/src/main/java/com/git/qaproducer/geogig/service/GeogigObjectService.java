@@ -17,7 +17,10 @@ public interface GeogigObjectService {
 
 	GeogigCat catObject(DTGeoserverManager geoserverManager, String repoName, String objectid) throws JAXBException;
 
-	GeogigFeatureAttribute catFeatureObject(DTGeoserverManager geoserverManager, String repoName, String path,
+	GeogigFeatureAttribute catConflictFeatureObject(DTGeoserverManager geoserverManager, String repoName, String path,
 			String commitId, String featureId) throws JAXBException;
+
+	GeogigFeatureAttribute catFeatureObject(DTGeoserverManager geoserverManager, String repoName, String path,
+			String objectid) throws JAXBException;
 
 }

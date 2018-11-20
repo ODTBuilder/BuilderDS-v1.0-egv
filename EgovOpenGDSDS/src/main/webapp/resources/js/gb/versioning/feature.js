@@ -17,18 +17,13 @@
 gb.versioning.Feature = function(obj) {
 	var that = this;
 	var options = obj ? obj : {};
+	this.epsg = options.epsg ? options.epsg : undefined;
+	this.editingTool = options.editingTool ? options.editingTool : undefined;
 	var url = options.url ? options.url : {};
 	this.featureLogURL = url.featureLog ? url.featureLog : undefined;
-
-	this.conflictView1 = new ol.View({
-		"center" : [ 0, 0 ],
-		"zoom" : 1
-	});
-
-	this.conflictView2 = new ol.View({
-		"center" : [ 0, 0 ],
-		"zoom" : 1
-	});
+	this.featureDiffURL = url.featureDiff ? url.featureDiff : undefined;
+	this.catFeatureObjectURL = url.catFeatureObject ? url.catFeatureObject : undefined;
+	this.featureRevertURL = url.featureRevert ? url.featureRevert : undefined;
 
 	this.ofeature = $("<div>").css({
 		"width" : "100%",
@@ -44,6 +39,17 @@ gb.versioning.Feature = function(obj) {
 		"border" : "1px solid #ccc",
 		"border-radius" : "4px"
 	});
+
+	this.omap = new ol.Map({
+		"target" : $(this.ofeature)[0],
+		"layers" : []
+	});
+
+	this.cmap = new ol.Map({
+		"target" : $(this.cfeature)[0],
+		"layers" : []
+	});
+
 	this.comfeature = $("<div>").css({
 		"width" : "100%",
 		"height" : "200px",
@@ -61,7 +67,7 @@ gb.versioning.Feature = function(obj) {
 
 	this.tbody = $("<div>").addClass("tbody").addClass("gb-versioning-feature-trg");
 	this.panel = new gb.panel.Base({
-		"width" : 412,
+		"width" : 458,
 		"height" : 550,
 		"positionX" : 4,
 		"right" : true,
@@ -81,7 +87,8 @@ gb.versioning.Feature = function(obj) {
 	var th2 = $("<div>").addClass("th").addClass("gb-versioning-feature-td").text("Time");
 	var th3 = $("<div>").addClass("th").addClass("gb-versioning-feature-td").text("Type");
 	var th4 = $("<div>").addClass("th").addClass("gb-versioning-feature-td").text("Changes");
-	var thr = $("<div>").addClass("tr").addClass("gb-versioning-feature-tr").append(th1).append(th2).append(th3).append(th4);
+	var th5 = $("<div>").addClass("th").addClass("gb-versioning-feature-td").text("Revert");
+	var thr = $("<div>").addClass("tr").addClass("gb-versioning-feature-tr").append(th1).append(th2).append(th3).append(th4).append(th5);
 	var thead = $("<div>").addClass("thead").addClass("gb-versioning-feature-trg").append(thr).css({
 		"text-align" : "center"
 	});
@@ -98,8 +105,9 @@ gb.versioning.Feature = function(obj) {
 		var repo = that.getRepo();
 		var path = that.getPath();
 		var until = $(that.getTBody()).find(".gb-versioning-feature-tr").last().find(".gb-button").val();
+		var idx = $(that.getTBody()).find(".gb-versioning-feature-tr").last().find(".gb-button").attr("idx");
 		var head = $(that.getTBody()).find(".gb-versioning-feature-tr").first().find(".gb-button").val();
-		that.loadFeatureHistory(geoserver, repo, path, 3, until, head);
+		that.loadFeatureHistory(geoserver, repo, path, 6, idx, until, head);
 	});
 	var btnarea = $("<div>").css({
 		"text-align" : "center"
@@ -143,7 +151,7 @@ gb.versioning.Feature.prototype.open = function() {
  * 
  * @method gb.versioning.Feature#loadFeatureHistory
  */
-gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path, limit, until, head) {
+gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path, limit, idx, until, head) {
 	var that = this;
 	var params = {
 		"serverName" : server,
@@ -156,6 +164,9 @@ gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path
 	}
 	if (head !== undefined) {
 		params["head"] = head;
+	}
+	if (idx !== undefined) {
+		params["index"] = idx;
 	}
 	if (until === undefined || head === undefined) {
 		if (this.getIDString() !== server + "/" + repo + "/" + path) {
@@ -194,6 +205,11 @@ gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path
 					if ((until !== undefined || head !== undefined) && (i === 0)) {
 						var early = $(that.getTBody()).find(".gb-versioning-feature-tr").last().find(".gb-button").val();
 						if (data.simpleCommits[i].commitId === early) {
+							if (data.simpleCommits.length === 1) {
+								var title = "Message";
+								var msg = "No commits to load";
+								that.messageModal(title, msg);
+							}
 							continue;
 						}
 					}
@@ -202,20 +218,47 @@ gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path
 					});
 					var td2 = $("<div>").addClass("td").addClass("gb-versioning-feature-td").append(data.simpleCommits[i].date);
 					var td3 = $("<div>").addClass("td").addClass("gb-versioning-feature-td").append(data.simpleCommits[i].changeType);
-					var button = $("<button>").addClass("gb-button").addClass("gb-button-default").text("Detail").attr({
+					var button = $("<button>").addClass("gb-button").addClass("gb-button-default").addClass(
+							"gb-versioning-feature-detail-btn").text("Detail").attr({
 						"title" : data.simpleCommits[i].message,
 						"value" : data.simpleCommits[i].commitId,
 						"idx" : data.simpleCommits[i].cIdx
 					}).click(function() {
-						that.openDetailChanges();
+						var geoserver = that.getServer();
+						var repo = that.getRepo();
+						var path = that.getPath();
+						// var nidx = parseInt($(this).attr("idx"));
+						var nidx = 0;
+						var oidx = parseInt($(this).attr("idx"));
+						// var oidx =
+						// $(that.getTBody()).find(".gb-versioning-feature-tr").last().find(".gb-button").attr("idx");
+						that.openDetailChanges(geoserver, repo, path, nidx, oidx);
 					});
 					var td4 = $("<div>").addClass("td").addClass("gb-versioning-feature-td").css({
 						"text-align" : "center"
 					}).append(button);
 
+					var rvButton = $("<button>").addClass("gb-button").addClass("gb-button-default").addClass(
+							"gb-versioning-feature-revert-btn").text("Run").click(function() {
+						var geoserver = that.getServer();
+						var repo = that.getRepo();
+						var path = that.getPath();
+						var ocommit = $(this).parents().eq(1).find(".gb-versioning-feature-detail-btn").val();
+						var ncommit = $(this).parents().eq(2).children().first().find(".gb-versioning-feature-detail-btn").val();
+						that.openRevertModal(geoserver, repo, path, ocommit, ncommit);
+					});
+					var td5 = $("<div>").addClass("td").addClass("gb-versioning-feature-td").css({
+						"text-align" : "center"
+					}).append(rvButton);
+
+					if (i === 0) {
+						$(button).prop("disabled", true);
+						$(rvButton).prop("disabled", true);
+					}
+
 					var msg = $("<div>").addClass("gb-tooltip-text").text(data.simpleCommits[i].message);
 					var tr = $("<div>").addClass("tr").addClass("gb-versioning-feature-tr").addClass("gb-tooltip").append(td1).append(td2)
-							.append(td3).append(td4);
+							.append(td3).append(td4).append(td5);
 					$(that.tbody).append(tr);
 				}
 			}
@@ -230,11 +273,21 @@ gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path
  * 피처 디테일 창을 연다.
  * 
  * @method gb.versioning.Feature#openDetailChanges
+ * @param {String}
+ *            server - 서버 이름
+ * @param {String}
+ *            repo - 레파지토리 이름
+ * @param {String}
+ *            path - 피처 패스
+ * @param {Number}
+ *            nidx - 최신 커밋 인덱스
+ * @param {Number}
+ *            oidx - 타겟 커밋 인덱스
  */
-gb.versioning.Feature.prototype.openDetailChanges = function() {
+gb.versioning.Feature.prototype.openDetailChanges = function(server, repo, path, nidx, oidx) {
 	var that = this;
 
-	var olabel = $("<div>").append("Committed Feature").addClass("gb-form").css({
+	var olabel = $("<div>").append("Commited Feature").addClass("gb-form").css({
 		"text-align" : "center"
 	});
 
@@ -242,12 +295,12 @@ gb.versioning.Feature.prototype.openDetailChanges = function() {
 	var oheadtd2 = $("<th>").text("Value");
 	var oheadth = $("<tr>").append(oheadtd1).append(oheadtd2);
 	var oattrthead = $("<thead>").append(oheadth);
-	var oattrtbody = $("<tbody>").css({
+	this.oattrtbody = $("<tbody>").css({
 		"overflow-y" : "auto",
 		"height" : "340px",
 		"width" : "354px"
 	});
-	var oattrtable = $("<table>").append(oattrthead).append(oattrtbody).addClass("gb-table");
+	var oattrtable = $("<table>").append(oattrthead).append(this.oattrtbody).addClass("gb-table");
 	var oattribute = $("<div>").append(oattrtable).css({
 		"height" : "370px",
 		"width" : "100%",
@@ -259,7 +312,7 @@ gb.versioning.Feature.prototype.openDetailChanges = function() {
 		"padding" : "10px"
 	});
 
-	var clabel = $("<div>").append("Current Feature").addClass("gb-form").css({
+	var clabel = $("<div>").append("Latest Feature").addClass("gb-form").css({
 		"text-align" : "center"
 	});
 
@@ -267,12 +320,12 @@ gb.versioning.Feature.prototype.openDetailChanges = function() {
 	var cheadtd2 = $("<th>").text("Value");
 	var cheadth = $("<tr>").append(cheadtd1).append(cheadtd2);
 	var cattrthead = $("<thead>").append(cheadth);
-	var cattrtbody = $("<tbody>").css({
+	this.cattrtbody = $("<tbody>").css({
 		"overflow-y" : "auto",
 		"height" : "340px",
 		"width" : "354px"
 	});
-	var cattrtable = $("<table>").append(cattrthead).append(cattrtbody).addClass("gb-table").css({
+	var cattrtable = $("<table>").append(cattrthead).append(this.cattrtbody).addClass("gb-table").css({
 		"width" : "100%",
 		"table-layout" : "fixed"
 	});
@@ -282,8 +335,8 @@ gb.versioning.Feature.prototype.openDetailChanges = function() {
 		"overflow" : "hidden"
 	});
 
-	$(oattrtbody).on("scroll", function() {
-		$(cattrtbody).prop("scrollTop", this.scrollTop).prop("scrollLeft", this.scrollLeft);
+	$(this.oattrtbody).on("scroll", function() {
+		$(that.cattrtbody).prop("scrollTop", this.scrollTop).prop("scrollLeft", this.scrollLeft);
 	});
 
 	var carea = $("<div>").append(clabel).append(this.cfeature).append(cattribute).css({
@@ -296,16 +349,13 @@ gb.versioning.Feature.prototype.openDetailChanges = function() {
 
 	var body = $("<div>").append(ocarea);
 
-	var revertBtn = $("<button>").css({
-		"float" : "left"
-	}).addClass("gb-button").addClass("gb-button-default").text("Revert");
 	var closeBtn = $("<button>").css({
 		"float" : "right"
 	}).addClass("gb-button").addClass("gb-button-default").text("Close");
 	var okBtn = $("<button>").css({
 		"float" : "right"
 	}).addClass("gb-button").addClass("gb-button-primary").text("Use");
-	var buttonArea = $("<span>").addClass("gb-modal-buttons").append(revertBtn).append(closeBtn);
+	var buttonArea = $("<span>").addClass("gb-modal-buttons").append(closeBtn);
 
 	var modal = new gb.modal.Base({
 		"title" : "Contrast The Changes",
@@ -315,318 +365,269 @@ gb.versioning.Feature.prototype.openDetailChanges = function() {
 		"body" : body,
 		"footer" : buttonArea
 	});
-	$(revertBtn).click(function() {
-		that.openRevertModal();
-	});
 
 	$(closeBtn).click(function() {
 		modal.close();
 	});
-	$(okBtn).click(function() {
-		console.log(idx);
-		$(branchSelect).val();
-		console.log($(branchSelect).val());
-		var select = $(that.conflictFeatureTbody).find("tr").eq(idx).find(".gb-repository-instead-branch");
-		$(select).filter("option:selected").text();
-		console.log($(select).find("option").filter(":selected").val());
-		$(select).val($(branchSelect).val());
-		$(select).trigger("change");
-		modal.close();
-	});
 
-	// var cparams1 = {
-	// "serverName" : server,
-	// "repoName" : crepos,
-	// "path" : path,
-	// "commitId" : this.getCommitId().ours,
-	// "featureId" : fid1
-	// }
-	//
-	// var cparams2 = {
-	// "serverName" : server,
-	// "repoName" : crepos,
-	// "path" : path,
-	// "commitId" : this.getCommitId().theirs,
-	// "featureId" : fid2
-	// }
+	var that = this;
+	var params = {
+		"serverName" : server,
+		"repoName" : repo,
+		"path" : path,
+		"newIndex" : nidx,
+		"oldIndex" : oidx
+	}
 
-	var wkt1;
-	var wkt2;
-	if (fid1 !== "0000000000000000000000000000000000000000") {
-		var fobjectURL1 = this.getCatFeatureObjectURL();
-		if (fobjectURL1.indexOf("?") !== -1) {
-			fobjectURL1 += "&";
-			fobjectURL1 += jQuery.param(cparams1);
-		} else {
-			fobjectURL1 += "?";
-			fobjectURL1 += jQuery.param(cparams1);
-		}
+	var tranURL = this.getFeatureDiffURL();
+	if (tranURL.indexOf("?") !== -1) {
+		tranURL += "&";
+		tranURL += jQuery.param(params);
+	} else {
+		tranURL += "?";
+		tranURL += jQuery.param(params);
+	}
 
-		$.ajax({
-			url : fobjectURL1,
-			method : "POST",
-			contentType : "application/json; charset=UTF-8",
-			// data : cparams1,
-			// dataType : 'jsonp',
-			// jsonpCallback : 'getJson',
-			beforeSend : function() {
-				// $("body").css("cursor", "wait");
-			},
-			complete : function() {
-				// $("body").css("cursor", "default");
-			},
-			success : function(data) {
-				console.log(data);
-				if (data.success === "true") {
-					var attrs = data.attributes;
-					for (var i = 0; i < attrs.length; i++) {
-						if (attrs[i].type === "POINT" || attrs[i].type === "LINESTRING" || attrs[i].type === "POLYGON"
-								|| attrs[i].type === "MULTIPOINT" || attrs[i].type === "MULTILINESTRING"
-								|| attrs[i].type === "MULTIPOLYGON") {
-							var wkt = attrs[i].value;
-							wkt1 = wkt;
-							console.log(wkt1);
-							var format = new ol.format.WKT();
-							var geom = format.readGeometry(wkt);
-							var feature = new ol.Feature({
-								"geometry" : geom
-							});
-							feature.setId(data.featureId);
-							console.log(feature);
-							console.log(feature.getId());
-							var style = new ol.style.Style({
-								image : new ol.style.Circle({
-									radius : 5,
-									fill : new ol.style.Fill({
-										color : 'orange'
-									})
-								}),
-								stroke : new ol.style.Stroke({
-									width : 1,
-									color : 'orange'
-								}),
-								fill : new ol.style.Fill({
-									color : 'orange'
-								})
-							});
+	$.ajax({
+		url : tranURL,
+		method : "POST",
+		contentType : "application/json; charset=UTF-8",
+		beforeSend : function() {
+			// $("body").css("cursor", "wait");
+		},
+		complete : function() {
+			// $("body").css("cursor", "default");
+		},
+		success : function(data) {
+			console.log(data);
+			if (data.success === "true") {
+				if (data.hasOwnProperty("diffs")) {
+					var diffs = data.diffs
+					if (Array.isArray(diffs)) {
+						if (diffs.length === 1) {
+							var elem = diffs[0];
 
-							var vlayer = new ol.layer.Vector({
-								"style" : style,
-								"source" : new ol.source.Vector({
-									"features" : [ feature ]
-								}),
-								"zIndex" : 2
-							});
+							var oldParams = {
+								"serverName" : server,
+								"repoName" : repo,
+								"path" : elem.path,
+								"commitId" : elem.oldObjectId,
+							}
+							console.log(oldParams);
 
-							var osm = new ol.layer.Tile({
-								"source" : new ol.source.OSM(),
-								"zIndex" : 1
-							});
+							var tranURL = that.getCatFeatureObjectURL();
+							if (tranURL.indexOf("?") !== -1) {
+								tranURL += "&";
+								tranURL += jQuery.param(oldParams);
+							} else {
+								tranURL += "?";
+								tranURL += jQuery.param(oldParams);
+							}
 
-							var epsg = attrs[i].crs.toLowerCase();
-							var code = epsg.substring(epsg.indexOf("epsg:") + 5);
-							var intcode = parseInt(code);
-							console.log(code);
+							$.ajax({
+								url : tranURL,
+								method : "POST",
+								contentType : "application/json; charset=UTF-8",
+								beforeSend : function() {
+									// $("body").css("cursor", "wait");
+								},
+								complete : function() {
+									// $("body").css("cursor", "default");
+								},
+								success : function(data_old) {
+									console.log(data_old);
+									if (data_old.success === "true" && data_old.error === null) {
+										var attr = data_old.attributes;
+										for (var i = 0; i < attr.length; i++) {
+											if (attr[i].crs !== null
+													&& (attr[i].type === "MULTIPOLYGON" || attr[i].type === "MULTILINESTRING"
+															|| attr[i].type === "MULTIPOINT" || attr[i].type === "POLYGON"
+															|| attr[i].type === "LINESTRING" || attr[i].type === "POINT")) {
+												var crs = attr[i].crs.substring(attr[i].crs.indexOf(":") + 1);
 
-							var ccrs = new gb.crs.BaseCRS({
-								"title" : "Base CRS",
-								"width" : 300,
-								"height" : 200,
-								"autoOpen" : false,
-								"message" : undefined,
-								"map" : that.getCurrentMap(),
-								"epsg" : Number.isInteger(intcode) ? code : "4326"
-							});
-
-							that.getCurrentMap().updateSize();
-							that.getCurrentMap().getLayers().clear();
-							that.getCurrentMap().addLayer(osm);
-							that.getCurrentMap().addLayer(vlayer);
-							that.getCurrentMap().getView().fit(geom);
-
-						} else {
-							var name = attrs[i].name;
-							var value = attrs[i].value;
-							var td1 = $("<td>").text(name);
-							var td2 = $("<td>").text(value).css({
-								"word-break" : "break-word",
-								"overflow-wrap" : "break-word"
-							});
-							var tr = $("<tr>").append(td1).append(td2);
-							$(cattrtbody).append(tr);
-						}
-
-					}
-
-					if (fid2 !== "0000000000000000000000000000000000000000") {
-						var fobjectURL2 = that.getCatFeatureObjectURL();
-						if (fobjectURL2.indexOf("?") !== -1) {
-							fobjectURL2 += "&";
-							fobjectURL2 += jQuery.param(cparams2);
-						} else {
-							fobjectURL2 += "?";
-							fobjectURL2 += jQuery.param(cparams2);
-						}
-
-						$.ajax({
-							url : fobjectURL2,
-							method : "POST",
-							contentType : "application/json; charset=UTF-8",
-							// data : cparams2,
-							// dataType : 'jsonp',
-							// jsonpCallback : 'getJson',
-							beforeSend : function() {
-								// $("body").css("cursor", "wait");
-							},
-							complete : function() {
-								// $("body").css("cursor", "default");
-							},
-							success : function(data) {
-								console.log(data);
-								if (data.success === "true") {
-									var attrs = data.attributes;
-									for (var i = 0; i < attrs.length; i++) {
-										if (attrs[i].type === "POINT" || attrs[i].type === "LINESTRING" || attrs[i].type === "POLYGON"
-												|| attrs[i].type === "MULTIPOINT" || attrs[i].type === "MULTILINESTRING"
-												|| attrs[i].type === "MULTIPOLYGON") {
-											var wkt = attrs[i].value;
-											wkt2 = wkt;
-											if (wkt1 !== wkt2) {
-												$(that.cfeature).css({
-													"border" : "3px solid #ffc523"
-												});
-												$(that.tfeature).css({
-													"border" : "3px solid #ffc523"
-												});
-											} else {
-												$(that.cfeature).css({
-													"border" : "1px solid #ccc"
-												});
-												$(that.tfeature).css({
-													"border" : "1px solid #ccc"
-												});
-											}
-											console.log(wkt2);
-											var format = new ol.format.WKT();
-											var geom = format.readGeometry(wkt);
-											var feature = new ol.Feature({
-												"geometry" : geom
-											});
-											feature.setId(data.featureId);
-											console.log(feature);
-											console.log(feature.getId());
-											var style = new ol.style.Style({
-												image : new ol.style.Circle({
-													radius : 5,
-													fill : new ol.style.Fill({
-														color : 'orange'
-													})
-												}),
-												stroke : new ol.style.Stroke({
-													width : 1,
-													color : 'orange'
-												}),
-												fill : new ol.style.Fill({
-													color : 'orange'
-												})
-											});
-
-											var vlayer = new ol.layer.Vector({
-												"style" : style,
-												"source" : new ol.source.Vector({
-													"features" : [ feature ]
-												}),
-												"zIndex" : 2
-											});
-
-											var osm = new ol.layer.Tile({
-												"source" : new ol.source.OSM(),
-												"zIndex" : 1
-											});
-
-											var epsg = attrs[i].crs.toLowerCase();
-											var code = epsg.substring(epsg.indexOf("epsg:") + 5);
-											var intcode = parseInt(code);
-											console.log(code);
-
-											var ccrs = new gb.crs.BaseCRS({
-												"title" : "Base CRS",
-												"width" : 300,
-												"height" : 200,
-												"autoOpen" : false,
-												"message" : undefined,
-												"map" : that.getTargetMap(),
-												"epsg" : Number.isInteger(intcode) ? code : "4326"
-											});
-
-											that.getTargetMap().updateSize();
-											that.getTargetMap().getLayers().clear();
-											that.getTargetMap().addLayer(osm);
-											that.getTargetMap().addLayer(vlayer);
-											var geom = feature.getGeometry();
-
-											that.getTargetMap().getView().fit(geom);
-
-										} else {
-											var name = attrs[i].name;
-											var value = attrs[i].value;
-											var td1 = $("<td>").text(name);
-											var td2 = $("<td>").text(value).css({
-												"word-break" : "break-word",
-												"overflow-wrap" : "break-word"
-											});
-											var tr = $("<tr>").append(td1).append(td2);
-											$(tattrtbody).append(tr);
-										}
-
-									}
-									if ($(cattrtbody).find("tr").length === $(tattrtbody).find("tr").length) {
-										var trs = $(cattrtbody).find("tr");
-										var ttrs = $(tattrtbody).find("tr");
-										for (var j = 0; j < trs.length; j++) {
-											if ($(trs[j]).find("td").eq(0).text() === $(ttrs[j]).find("td").eq(0).text()) {
-
-												if ($(trs[j]).find("td").eq(1).text() !== $(ttrs[j]).find("td").eq(1).text()) {
-													$(trs[j]).css({
-														"background-color" : "#ffc523"
+												var oldwkt = attr[i].value;
+												if (oldwkt !== undefined && oldwkt !== null) {
+													var format = new ol.format.WKT();
+													var geom = format.readGeometry(oldwkt);
+													var feature = new ol.Feature({
+														"geometry" : geom
 													});
-													$(ttrs[j]).css({
-														"background-color" : "#ffc523"
+
+													var style = new ol.style.Style({
+														image : new ol.style.Circle({
+															radius : 5,
+															fill : new ol.style.Fill({
+																color : 'orange'
+															})
+														}),
+														stroke : new ol.style.Stroke({
+															width : 1,
+															color : 'orange'
+														}),
+														fill : new ol.style.Fill({
+															color : 'orange'
+														})
+													});
+
+													var vlayer = new ol.layer.Vector({
+														"style" : style,
+														"source" : new ol.source.Vector({
+															"features" : [ feature ]
+														}),
+														"zIndex" : 2
+													});
+
+													var osm = new ol.layer.Tile({
+														"source" : new ol.source.OSM(),
+														"zIndex" : 1
+													});
+
+													that.getLeftMap().updateSize();
+													that.getLeftMap().getLayers().clear();
+													that.getLeftMap().addLayer(osm);
+													that.getLeftMap().addLayer(vlayer);
+													// that.getLeftMap().getView().fit(geom);
+
+													// this.leftcrs = new
+													// gb.crs.BaseCRS({
+													// "autoOpen" : false,
+													// "title" : "Base CRS",
+													// "message" :
+													// $(".epsg-now"),
+													// "maps" : [
+													// that.getLeftMap() ],
+													// "epsg" : crs,
+													// "callback" : function() {
+													// that.getLeftMap().getView().fit(geom);
+													// }
+													// });
+												}
+											} else {
+												var otd1 = $("<td>").text(attr[i].name);
+												var otd2 = $("<td>").text(attr[i].value);
+												var otr1 = $("<tr>").append(otd1).append(otd2);
+												$(that.getLeftTBody()).append(otr1);
+											}
+										}
+									}
+								}
+							});
+
+							var newParams = {
+								"serverName" : server,
+								"repoName" : repo,
+								"path" : elem.newPath,
+								"commitId" : elem.newObjectId,
+							}
+							console.log(newParams);
+
+							var tranURL2 = that.getCatFeatureObjectURL();
+							if (tranURL2.indexOf("?") !== -1) {
+								tranURL2 += "&";
+								tranURL2 += jQuery.param(newParams);
+							} else {
+								tranURL2 += "?";
+								tranURL2 += jQuery.param(newParams);
+							}
+
+							$.ajax({
+								url : tranURL2,
+								method : "POST",
+								contentType : "application/json; charset=UTF-8",
+								beforeSend : function() {
+									// $("body").css("cursor", "wait");
+								},
+								complete : function() {
+									// $("body").css("cursor", "default");
+								},
+								success : function(data_new) {
+									console.log(data_new);
+									if (data_new.success === "true" && data_new.error === null) {
+										var attr = data_new.attributes;
+										for (var i = 0; i < attr.length; i++) {
+											if (attr[i].crs !== null
+													&& (attr[i].type === "MULTIPOLYGON" || attr[i].type === "MULTILINESTRING"
+															|| attr[i].type === "MULTIPOINT" || attr[i].type === "POLYGON"
+															|| attr[i].type === "LINESTRING" || attr[i].type === "POINT")) {
+												var crs = attr[i].crs.substring(attr[i].crs.indexOf(":") + 1);
+
+												var newwkt = attr[i].value;
+												if (newwkt !== undefined && newwkt !== null) {
+													var format = new ol.format.WKT();
+													var geom = format.readGeometry(newwkt);
+													var feature = new ol.Feature({
+														"geometry" : geom
+													});
+
+													var style = new ol.style.Style({
+														image : new ol.style.Circle({
+															radius : 5,
+															fill : new ol.style.Fill({
+																color : 'orange'
+															})
+														}),
+														stroke : new ol.style.Stroke({
+															width : 1,
+															color : 'orange'
+														}),
+														fill : new ol.style.Fill({
+															color : 'orange'
+														})
+													});
+
+													var vlayer = new ol.layer.Vector({
+														"style" : style,
+														"source" : new ol.source.Vector({
+															"features" : [ feature ]
+														}),
+														"zIndex" : 2
+													});
+
+													var osm = new ol.layer.Tile({
+														"source" : new ol.source.OSM(),
+														"zIndex" : 1
+													});
+
+													that.getRightMap().updateSize();
+													that.getRightMap().getLayers().clear();
+													that.getRightMap().addLayer(osm);
+													that.getRightMap().addLayer(vlayer);
+													// that.getLeftMap().getView().fit(geom);
+
+													this.crs = new gb.crs.BaseCRS({
+														"autoOpen" : false,
+														"title" : "Base CRS",
+														"message" : $(".epsg-now"),
+														"maps" : [ that.getLeftMap(), that.getRightMap() ],
+														"epsg" : crs,
+														"callback" : function() {
+															that.getRightMap().getView().fit(geom);
+														}
 													});
 												}
+											} else {
+												var ctd1 = $("<td>").text(attr[i].name);
+												var ctd2 = $("<td>").text(attr[i].value);
+												var ctr1 = $("<tr>").append(ctd1).append(ctd2);
+												$(that.getRightTBody()).append(ctr1);
 											}
 										}
 									}
-								} else {
-									var title = "Error";
-									var msg = "Retrieve feature failed."
-									that.messageModal(title, msg);
 								}
-							},
-							error : function(jqXHR, textStatus, errorThrown) {
-
-							}
-						});
+							});
+						}
 					} else {
-						that.getTargetMap().updateSize();
-						var td1 = $("<td>").text("Deleted");
-						var td2 = $("<td>").text("Deleted");
-						var tr = $("<tr>").append(td1).append(td2);
-						$(tattrtbody).append(tr);
+						that.getLeftMap().getLayers().clear();
+						that.getRightMap().getLayers().clear();
 					}
-				} else {
-					var title = "Error";
-					var msg = "Retrieve feature failed."
-					that.messageModal(title, msg);
 				}
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-
 			}
-		});
-	} else {
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
 
-	}
+		}
+	});
+
 };
 
 /**
@@ -634,7 +635,7 @@ gb.versioning.Feature.prototype.openDetailChanges = function() {
  * 
  * @method gb.versioning.Feature#openRevertModal
  */
-gb.versioning.Feature.prototype.openRevertModal = function() {
+gb.versioning.Feature.prototype.openRevertModal = function(server, repo, path, oc, nc) {
 	var that = this;
 	var msg1 = $("<div>").text("Revert the feature to the point in time when it was committed.").css({
 		"text-align" : "center",
@@ -644,7 +645,12 @@ gb.versioning.Feature.prototype.openRevertModal = function() {
 		"text-align" : "center",
 		"font-size" : "16px"
 	});
-	var body = $("<div>").append(msg1).append(msg2);
+	var inputMsg = $("<input>").attr({
+		"type" : "text"
+	}).addClass("gb-form");
+	var msg3 = $("<div>").append(inputMsg);
+
+	var body = $("<div>").append(msg1).append(msg2).append(msg3);
 	var closeBtn = $("<button>").css({
 		"float" : "right"
 	}).addClass("gb-button").addClass("gb-button-default").text("Cancel");
@@ -655,7 +661,7 @@ gb.versioning.Feature.prototype.openRevertModal = function() {
 
 	var commitModal = new gb.modal.Base({
 		"title" : "Revert",
-		"width" : 350,
+		"width" : 494,
 		"height" : 200,
 		"autoOpen" : true,
 		"body" : body,
@@ -665,14 +671,8 @@ gb.versioning.Feature.prototype.openRevertModal = function() {
 		commitModal.close();
 	});
 	$(okBtn).click(function() {
-		// mModal.close();
-		// that.endTransaction(server, repo, tid,
-		// commitModal);
-		// that.resolveConflictModal(server, repo, repo,
-		// that.getNowBranch().text,
-		// branch, data.merge.ours, data.merge.theirs,
-		// data.merge.features, commitModal);
-		that.revert();
+		var message = inputMsg.val();
+		that.revert(server, repo, path, oc, nc, message, message, commitModal);
 	});
 };
 
@@ -681,73 +681,107 @@ gb.versioning.Feature.prototype.openRevertModal = function() {
  * 
  * @method gb.versioning.Feature#revert
  */
-gb.versioning.Feature.prototype.revert = function() {
+gb.versioning.Feature.prototype.revert = function(server, repo, path, oc, nc, cm, mm, rmodal) {
 	var that = this;
-	var data = {
-		"success" : "false"
-	};
-	if (data.success === "true") {
-		var msg1 = $("<div>").text("Feature reverted successfully.").css({
-			"text-align" : "center",
-			"font-size" : "16px"
-		});
-		var body = $("<div>").append(msg1);
-		var closeBtn = $("<button>").css({
-			"float" : "right"
-		}).addClass("gb-button").addClass("gb-button-default").text("OK");
-		var buttonArea = $("<span>").addClass("gb-modal-buttons").append(closeBtn);
 
-		var commitModal = new gb.modal.Base({
-			"title" : "Revert",
-			"width" : 350,
-			"height" : 200,
-			"autoOpen" : true,
-			"body" : body,
-			"footer" : buttonArea
-		});
-		$(closeBtn).click(function() {
-			commitModal.close();
-		});
-	} else {
-		var msg1 = $("<div>").text("Revert failed.").css({
-			"text-align" : "center",
-			"font-size" : "16px"
-		});
-		var msg2 = $("<div>").text('There are conflicting features. Do you want to resolve?').css({
-			"text-align" : "center",
-			"font-size" : "16px"
-		});
-		var body = $("<div>").append(msg1).append(msg2);
-		var closeBtn = $("<button>").css({
-			"float" : "right"
-		}).addClass("gb-button").addClass("gb-button-default").text("Cancel");
-		var okBtn = $("<button>").css({
-			"float" : "right"
-		}).addClass("gb-button").addClass("gb-button-primary").text("Resolve");
-		var buttonArea = $("<span>").addClass("gb-modal-buttons").append(okBtn).append(closeBtn);
-
-		var commitModal = new gb.modal.Base({
-			"title" : "Revert",
-			"width" : 350,
-			"height" : 200,
-			"autoOpen" : true,
-			"body" : body,
-			"footer" : buttonArea
-		});
-		$(closeBtn).click(function() {
-			commitModal.close();
-		});
-		$(okBtn).click(function() {
-			// mModal.close();
-			// that.endTransaction(server, repo, tid,
-			// commitModal);
-			// that.resolveConflictModal(server, repo, repo,
-			// that.getNowBranch().text,
-			// branch, data.merge.ours, data.merge.theirs,
-			// data.merge.features, commitModal);
-			that.openConflictDetailModal();
-		});
+	var params = {
+		"serverName" : server,
+		"repoName" : repo,
+		"path" : path,
+		"oldCommitId" : oc,
+		"newCommitId" : nc,
+		"commitMessage" : cm,
+		"mergeMessage" : mm
 	}
+	console.log(params);
+
+	var tranURL = that.getFeatureRevertURL();
+	if (tranURL.indexOf("?") !== -1) {
+		tranURL += "&";
+		tranURL += jQuery.param(params);
+	} else {
+		tranURL += "?";
+		tranURL += jQuery.param(params);
+	}
+
+	$.ajax({
+		url : tranURL,
+		method : "POST",
+		contentType : "application/json; charset=UTF-8",
+		beforeSend : function() {
+			// $("body").css("cursor", "wait");
+		},
+		complete : function() {
+			// $("body").css("cursor", "default");
+		},
+		success : function(data) {
+			console.log(data);
+			if (data.success === "true") {
+				if (data.merge.conflicts === null) {
+					var msg1 = $("<div>").text("Feature reverted successfully.").css({
+						"text-align" : "center",
+						"font-size" : "16px"
+					});
+					var body = $("<div>").append(msg1);
+					var closeBtn = $("<button>").css({
+						"float" : "right"
+					}).addClass("gb-button").addClass("gb-button-default").text("OK");
+					var buttonArea = $("<span>").addClass("gb-modal-buttons").append(closeBtn);
+
+					var commitModal = new gb.modal.Base({
+						"title" : "Revert",
+						"width" : 350,
+						"height" : 200,
+						"autoOpen" : true,
+						"body" : body,
+						"footer" : buttonArea
+					});
+					$(closeBtn).click(function() {
+						commitModal.close();
+						that.runAfterSaveCallback();
+					});
+					rmodal.close();
+				} else if (Array.isArray(data.merge.conflicts)) {
+					var msg1 = $("<div>").text("Revert failed.").css({
+						"text-align" : "center",
+						"font-size" : "16px"
+					});
+					var msg2 = $("<div>").text('There are conflicting features. Do you want to resolve?').css({
+						"text-align" : "center",
+						"font-size" : "16px"
+					});
+					var body = $("<div>").append(msg1).append(msg2);
+					var closeBtn = $("<button>").css({
+						"float" : "right"
+					}).addClass("gb-button").addClass("gb-button-default").text("Cancel");
+					var okBtn = $("<button>").css({
+						"float" : "right"
+					}).addClass("gb-button").addClass("gb-button-primary").text("Resolve");
+					var buttonArea = $("<span>").addClass("gb-modal-buttons").append(okBtn).append(closeBtn);
+
+					var commitModal = new gb.modal.Base({
+						"title" : "Revert",
+						"width" : 350,
+						"height" : 200,
+						"autoOpen" : true,
+						"body" : body,
+						"footer" : buttonArea
+					});
+					$(closeBtn).click(function() {
+						commitModal.close();
+					});
+					$(okBtn).click(
+							function() {
+								mModal.close();
+								that.endTransaction(server, repo, tid, commitModal);
+								that.resolveConflictModal(server, repo, repo, that.getNowBranch().text, branch, data.merge.ours,
+										data.merge.theirs, data.merge.features, commitModal);
+								that.openConflictDetailModal();
+							});
+				}
+			}
+		}
+	});
 };
 
 /**
@@ -1202,6 +1236,33 @@ gb.versioning.Feature.prototype.getFeatureLogURL = function() {
 };
 
 /**
+ * 피처 비교 객체 요청 URL을 반환한다.
+ * 
+ * @method gb.versioning.Feature#getFeatureDiffURL
+ */
+gb.versioning.Feature.prototype.getFeatureDiffURL = function() {
+	return this.featureDiffURL;
+};
+
+/**
+ * 피처 정보 반환 URL을 반환한다.
+ * 
+ * @method gb.versioning.Feature#getCatFeatureObjectURL
+ */
+gb.versioning.Feature.prototype.getCatFeatureObjectURL = function() {
+	return this.catFeatureObjectURL;
+};
+
+/**
+ * 피처 되돌리기 요청 URL을 반환한다.
+ * 
+ * @method gb.versioning.Feature#getFeatureRevertURL
+ */
+gb.versioning.Feature.prototype.getFeatureRevertURL = function() {
+	return this.featureRevertURL;
+};
+
+/**
  * 피처이력 목록을 비운다.
  * 
  * @method gb.versioning.Feature#clearChangesTbody
@@ -1350,7 +1411,7 @@ gb.versioning.Feature.prototype.refresh = function() {
 		var geoserver = this.getServer();
 		var repo = this.getRepo();
 		var path = this.getPath();
-		this.loadFeatureHistory(geoserver, repo, path, 3);
+		this.loadFeatureHistory(geoserver, repo, path, 10, 0);
 	}
 };
 
@@ -1380,3 +1441,105 @@ gb.versioning.Feature.prototype.getFeature = function() {
 gb.versioning.Feature.prototype.loadMoreHistory = function() {
 
 };
+/**
+ * 오류 메시지 창을 생성한다.
+ * 
+ * @method gb.versioning.Feature#messageModal
+ * @param {Object}
+ *            server - 작업 중인 서버 노드
+ * @param {Object}
+ *            repo - 작업 중인 리포지토리 노드
+ * @param {Object}
+ *            branch - 작업 중인 브랜치 노드
+ */
+gb.versioning.Feature.prototype.messageModal = function(title, msg) {
+	var that = this;
+	var msg1 = $("<div>").text(msg).css({
+		"text-align" : "center",
+		"font-size" : "16px",
+		"padding-top" : "26px"
+	});
+	var body = $("<div>").append(msg1);
+	var okBtn = $("<button>").css({
+		"float" : "right"
+	}).addClass("gb-button").addClass("gb-button-primary").text("OK");
+	var buttonArea = $("<span>").addClass("gb-modal-buttons").append(okBtn);
+
+	var modal = new gb.modal.Base({
+		"title" : title,
+		"width" : 310,
+		"height" : 200,
+		"autoOpen" : true,
+		"body" : body,
+		"footer" : buttonArea
+	});
+	$(okBtn).click(function() {
+		modal.close();
+	});
+};
+
+/**
+ * 왼쪽 ol.Map을 반환한다.
+ * 
+ * @method gb.versioning.Feature#getLeftMap
+ * @return {ol.Map}
+ * 
+ */
+gb.versioning.Feature.prototype.getLeftMap = function() {
+	return this.omap;
+}
+
+/**
+ * 오른쪽 ol.Map을 반환한다.
+ * 
+ * @method gb.versioning.Feature#getRightMap
+ * @return {ol.Map}
+ * 
+ */
+gb.versioning.Feature.prototype.getRightMap = function() {
+	return this.cmap;
+}
+
+/**
+ * 왼쪽 피처 tbody를 반환한다.
+ * 
+ * @method gb.versioning.Feature#getLeftTBody
+ * @return {element}
+ * 
+ */
+gb.versioning.Feature.prototype.getLeftTBody = function() {
+	return this.oattrtbody;
+}
+
+/**
+ * 오른쪽 피처 tbody를 반환한다.
+ * 
+ * @method gb.versioning.Feature#getRightTBody
+ * @return {element}
+ * 
+ */
+gb.versioning.Feature.prototype.getRightTBody = function() {
+	return this.cattrtbody;
+}
+
+/**
+ * 레이어 저장후 함수를 실행한다.
+ * 
+ * @method gb.versioning.Feature#afterSaveCallback
+ * @return {element}
+ * 
+ */
+gb.versioning.Feature.prototype.runAfterSaveCallback = function() {
+	this.editingTool.refreshTileLayer();
+}
+
+/**
+ * 레이어 저장후 함수를 설정한다.
+ * 
+ * @method gb.versioning.Feature#setEditingTool
+ * @param {Function}
+ *            fnc - 리버트 또는 충돌관리 후 변경된 레이어로 업데이트할 함수 설정
+ */
+gb.versioning.Feature.prototype.setEditingTool = function(tool) {
+	this.editingTool = tool;
+}

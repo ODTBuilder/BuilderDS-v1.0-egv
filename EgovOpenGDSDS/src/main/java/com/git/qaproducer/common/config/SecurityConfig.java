@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.git.qaproducer.common.handler.UserLoginFailureEventHandler;
+import com.git.qaproducer.common.handler.UserLoginSuccessEventHandler;
 import com.git.qaproducer.common.handler.UserLogoutSuccessHandler;
 
 @Configuration
@@ -22,6 +24,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserDetailsService userDetailsService;
 
+	@Autowired
+	UserLoginSuccessEventHandler userLoginSuccessHandler;
+	
+	@Autowired
+	UserLoginFailureEventHandler userLoginFailHandler;
+	
 	@Autowired
 	UserLogoutSuccessHandler userLogoutSuccessHandler;
 
@@ -40,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/upload.do").authenticated().antMatchers("/user/userinfo.do").authenticated()
 				.antMatchers("/user/deactivateuser.ajax").authenticated();
 		http.formLogin().loginPage("/user/signin.do").permitAll().loginProcessingUrl("/user/signinProcess.do")
-				.defaultSuccessUrl("/map.do").failureUrl("/user/signin.do");
+				.defaultSuccessUrl("/map.do").failureUrl("/user/signin.do").successHandler(userLoginSuccessHandler).failureHandler(userLoginFailHandler);
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/user/signout.do"))
 				.logoutSuccessHandler(userLogoutSuccessHandler);
 		// .logoutSuccessUrl("/main.do")

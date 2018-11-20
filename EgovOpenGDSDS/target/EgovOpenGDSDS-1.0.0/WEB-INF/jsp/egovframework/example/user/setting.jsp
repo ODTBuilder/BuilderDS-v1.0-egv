@@ -131,7 +131,7 @@ input.radio:checked+label::before {
 
 				if (tempLayerDef != JSON.stringify(layerDef.getStructure())) {
 					optionDef.clearStructure();
-					gitrnd.alert("warning", " <spring:message code="lang.alertValidateItemReset" />");
+					git.alert("warning", " <spring:message code="lang.alertValidateItemReset" />");
 				}
 				optionDef.init();
 			});
@@ -208,7 +208,7 @@ input.radio:checked+label::before {
 				if (ldef.length > 0) {
 					layerDef.clearStructure();
 					layerDef.updateStructure();
-					gitrnd.alert("warning", " <spring:message code="lang.initLaOptionChng" />");
+					git.alert("warning", " <spring:message code="lang.initLaOptionChng" />");
 				}
 				optionDef.setQACategory(this.value);
 			});
@@ -219,7 +219,7 @@ input.radio:checked+label::before {
 					if (ldef.length > 0) {
 						layerDef.clearStructure();
 						layerDef.updateStructure();
-						gitrnd.alert("warning", " <spring:message code="lang.initLaOptionChng" />");
+						git.alert("warning", " <spring:message code="lang.initLaOptionChng" />");
 					}
 					optionDef.setQAVersion(this.value);
 				}
@@ -299,7 +299,7 @@ input.radio:checked+label::before {
 			
 			$("#def-name").val(typeof name === "string" ? name : "");
 		});
-		var gitrnd = {
+		var git = {
 			alert : function(type, message) {
 				var alert = "alert-";
 				switch (type) {

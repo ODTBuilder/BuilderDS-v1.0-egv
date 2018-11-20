@@ -12,18 +12,18 @@
      
      <!--      추가 -->
 	<!-- JDBC의 연결을 처리하는 기능을 가진 DataSource -->
-	<bean id="adminDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="userDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://175.116.181.42:5432/opengds_2018" />
-		<property name="username" value="opensource" />
-		<property name="password" value="opensource" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/opengds_2018" />
+		<property name="username" value="postgres" />
+		<property name="password" value="postgres" />
 	</bean>
 
 
-	<bean id="adminTransactionManager"
+	<bean id="userTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="adminDataSource" />
+		<property name="dataSource" ref="userDataSource" />
 	</bean>
 
      

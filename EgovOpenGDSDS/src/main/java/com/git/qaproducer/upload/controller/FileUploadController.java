@@ -17,6 +17,7 @@
 
 package com.git.qaproducer.upload.controller;
 
+import java.security.Principal;
 import java.util.LinkedList;
 
 import javax.annotation.Resource;
@@ -24,9 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,14 +60,21 @@ public class FileUploadController extends AbstractController{
 	 */
 	@RequestMapping(value = "/fileUpload.ajax", method = RequestMethod.POST)
 	public @ResponseBody LinkedList<FileMeta> fileUploadRequest(MultipartHttpServletRequest request,
-			HttpServletResponse response, @AuthenticationPrincipal LoginUser loginUser) throws Throwable {
-		if(loginUser==null){
-			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
-		}
-		String serverName = request.getParameter("serverName");
-		DTGeoserverManager dtGeoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
+			HttpServletResponse response, Principal principal) throws Throwable {
+		
 		LinkedList<FileMeta> files = new LinkedList<FileMeta>();
-		files = fileService.filesUpload(dtGeoserverManager,loginUser,request, response);
+		
+		LoginUser loginUser = null;
+		if(principal!=null){
+			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
+			if(loginUser==null){
+				throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
+			}else{
+				String serverName = request.getParameter("serverName");
+				DTGeoserverManager dtGeoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
+				files = fileService.filesUpload(dtGeoserverManager,loginUser,request, response);
+			}
+		}
 		return files;
 	}
 
