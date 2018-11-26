@@ -1,20 +1,13 @@
 package com.git.qaproducer.controller;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.git.qaproducer.common.exception.ValidationAuthException;
-import com.git.qaproducer.common.security.LoginUser;
 
 
 @Controller
@@ -61,17 +54,5 @@ public class ErrorController {
 		mav.addObject("errormessage", "요청을 처리중 오류가 발생했습니다. 다시 시도해 주세요.");
 		mav.setViewName("/error/error");
 		return mav;
-	}
-
-	@ExceptionHandler(ValidationAuthException.class)
-	public void errorValidationAuth(HttpServletRequest request, HttpServletResponse response,
-			Principal principal, Exception exception) throws Exception {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
-		LOGGER.info("error validation auth");
-		response.setStatus(500);
-		response.sendError(500, "해당 검수의 요청 권한이 없습니다.");
 	}
 }

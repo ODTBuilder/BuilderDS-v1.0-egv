@@ -32,7 +32,7 @@ import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 import com.git.gdsbuilder.geoserver.data.DTGeoserverManagerList;
 import com.git.gdsbuilder.geoserver.factory.DTGeoserverFactory;
 import com.git.gdsbuilder.geoserver.factory.impl.DTGeoserverFactoryImpl;
-import com.git.qaproducer.common.security.LoginUser;
+import com.git.qaproducer.user.domain.User;
 
 
 
@@ -115,14 +115,14 @@ public class AbstractController {
 	 *         603 : Geoserver 세션없음
 	 *         604 : Geoserver 정보오류 
 	 * */
-	public int addGeoserverToSession(HttpServletRequest request, LoginUser loginUser){
+	public int addGeoserverToSession(HttpServletRequest request, User loginUser){
 		String serverName = "";
 		String serverURL = "";
 		String id="";
 		String pw="";
 		
 		//사용자 로그인 세션체크
-		LoginUser user = loginUser;
+		User user = loginUser;
 		if(user==null){
 			return 600;
 		}
@@ -190,12 +190,12 @@ public class AbstractController {
 	 *         603 : Geoserver 세션없음
 	 *         605 : 서버이름존재 X 
 	 * */
-	public int removeGeoserverToSession(HttpServletRequest request, LoginUser loginUser){
+	public int removeGeoserverToSession(HttpServletRequest request, User loginUser){
 		String serverName = "";
 		
 		
 		//사용자 로그인 세션체크
-		LoginUser user = loginUser;
+		User user = loginUser;
 		if(user==null){
 			return 600;
 		}
@@ -244,11 +244,11 @@ public class AbstractController {
 	 * @param request
 	 * @return DTGeoserverManager
 	 * */
-	public DTGeoserverManager getGeoserverManagerToSession(HttpServletRequest request, LoginUser loginUser, String serverName){
+	public DTGeoserverManager getGeoserverManagerToSession(HttpServletRequest request, User loginUser, String serverName){
 		DTGeoserverManager dtGeoserverManager = null;
 		
 		//사용자 로그인 세션체크
-		LoginUser user = loginUser;
+		User user = loginUser;
 		if(user==null){
 			LOGGER.error("사용자 세션 존재 X");
 			return null;
@@ -286,11 +286,11 @@ public class AbstractController {
 	 * @param loginUser
 	 * @return DTGeoserverManagerList
 	 * */
-	public DTGeoserverManagerList getGeoserverManagersToSession(HttpServletRequest request, LoginUser loginUser){
+	public DTGeoserverManagerList getGeoserverManagersToSession(HttpServletRequest request, User loginUser){
 		DTGeoserverManagerList dtGeoserverManagers = null;
 		
 		//사용자 로그인 세션체크
-		LoginUser user = loginUser;
+		User user = loginUser;
 		if(user==null){
 			LOGGER.error("사용자 세션 존재 X");
 			return null;
@@ -314,7 +314,7 @@ public class AbstractController {
 	 * @param loginUser
 	 * @return boolean
 	 * */
-	public boolean checkUserGeoserver(HttpServletRequest request, LoginUser loginUser){
+	public boolean checkUserGeoserver(HttpServletRequest request, User loginUser){
 		boolean flag = false;
 		
 		String serverName = "";

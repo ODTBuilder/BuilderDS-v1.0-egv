@@ -7,7 +7,7 @@ import com.git.gdsbuilder.geogig.type.GeogigDiff;
 import com.git.gdsbuilder.geogig.type.GeogigFeatureRevert;
 import com.git.gdsbuilder.geogig.type.GeogigFeatureSimpleLog;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
-import com.git.qaproducer.common.security.LoginUser;
+import com.git.qaproducer.user.domain.User;
 
 public interface GeogigFeatureService {
 
@@ -15,13 +15,13 @@ public interface GeogigFeatureService {
 	 * @param geoserverManager
 	 * @param repoName
 	 * @param path
-	 * @param oldIndex
-	 * @param newIndex
+	 * @param newCommitId
+	 * @param oldCommitId
 	 * @return
 	 * @throws JAXBException
 	 */
-	GeogigDiff featureDiff(DTGeoserverManager geoserverManager, String repoName, String path, int oldIndex,
-			int newIndex) throws JAXBException;
+	GeogigDiff featureDiff(DTGeoserverManager geoserverManager, String repoName, String path, String newCommitId,
+			String oldCommitId) throws JAXBException;
 
 	/**
 	 * @param geoserverManager
@@ -60,7 +60,7 @@ public interface GeogigFeatureService {
 	 * @throws JAXBException
 	 */
 	GeogigFeatureRevert featureRevert(DTGeoserverManager geoserverManager, String repoName, String path,
-			String oldCommitId, String newCommitId, String commitMessage, String mergeMessage, LoginUser loginUser)
+			String oldCommitId, String newCommitId, String commitMessage, String mergeMessage, User loginUser)
 			throws JAXBException;
 
 }

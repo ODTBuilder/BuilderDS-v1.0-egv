@@ -82,7 +82,7 @@ public class GeogigRemoteRepositoryTree extends JSONArray {
 		} else {
 			if (dtGeoserver != null && type != null && node != null) {
 				String baseURL = dtGeoserver.getRestURL();
-				String username = dtGeoserver.getUsername();
+				String username = dtGeoserver.getUid();
 				String password = dtGeoserver.getPassword();
 
 				String[] param = node.split(":");

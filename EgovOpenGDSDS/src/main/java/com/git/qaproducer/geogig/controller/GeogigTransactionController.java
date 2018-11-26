@@ -3,8 +3,6 @@
  */
 package com.git.qaproducer.geogig.controller;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 
@@ -19,9 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.git.gdsbuilder.geogig.type.GeogigTransaction;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
-import com.git.qaproducer.common.security.LoginUser;
 import com.git.qaproducer.controller.AbstractController;
 import com.git.qaproducer.geogig.service.GeogigTransactionService;
+import com.git.qaproducer.user.domain.User;
+import com.git.qaproducer.user.domain.User.EnUserType;
 
 /**
  * @author GIT
@@ -37,44 +36,35 @@ public class GeogigTransactionController extends AbstractController {
 
 	@RequestMapping(value = "/beginTransaction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public GeogigTransaction beginTransaction(HttpServletRequest request, Principal principal,
+	public GeogigTransaction beginTransaction(HttpServletRequest request,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return transactionService.beginTransaction(geoserverManager, repoName);
 	}
 
 	@RequestMapping(value = "/endTransaction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public GeogigTransaction endTransaction(HttpServletRequest request, Principal principal,
+	public GeogigTransaction endTransaction(HttpServletRequest request,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "transactionId", required = false) String transactionId) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return transactionService.endTransaction(geoserverManager, repoName, transactionId);
 	}
 
 	@RequestMapping(value = "/cancelTransaction.do", method = RequestMethod.POST)
 	@ResponseBody
-	public GeogigTransaction cancelTransaction(HttpServletRequest request, Principal principal,
+	public GeogigTransaction cancelTransaction(HttpServletRequest request,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "transactionId", required = false) String transactionId) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return transactionService.cancelTransaction(geoserverManager, repoName, transactionId);
 	}

@@ -4,6 +4,34 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.git.qaproducer.user.mapper.UserMapper">
 
+
+	<select id="loginUserByInfo" parameterType="hashmap"
+		resultType="com.git.qaproducer.user.domain.User">
+		SELECT
+		idx,
+		uid,
+		pw,
+		email,
+		auth,
+		fname,
+		lname,
+		active,
+		tb_user.aid
+		FROM
+		tb_user,
+		tb_auth
+		WHERE tb_user.uid =
+		#{uid}
+		AND
+		tb_user.aid =
+		tb_auth.aid
+		AND
+		tb_user.pw = #{pw}
+		AND
+		tb_user.active = true
+	</select>
+
+
 	<select id="retrieveUserById" parameterType="String"
 		resultType="com.git.qaproducer.user.domain.User">
 		SELECT

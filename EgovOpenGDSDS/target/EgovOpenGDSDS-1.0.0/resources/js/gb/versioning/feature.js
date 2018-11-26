@@ -251,6 +251,11 @@ gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path
 						"text-align" : "center"
 					}).append(rvButton);
 
+					if (i === 0) {
+						$(button).prop("disabled", true);
+						$(rvButton).prop("disabled", true);
+					}
+
 					var msg = $("<div>").addClass("gb-tooltip-text").text(data.simpleCommits[i].message);
 					var tr = $("<div>").addClass("tr").addClass("gb-versioning-feature-tr").addClass("gb-tooltip").append(td1).append(td2)
 							.append(td3).append(td4).append(td5);
@@ -611,6 +616,9 @@ gb.versioning.Feature.prototype.openDetailChanges = function(server, repo, path,
 								}
 							});
 						}
+					} else {
+						that.getLeftMap().getLayers().clear();
+						that.getRightMap().getLayers().clear();
 					}
 				}
 			}

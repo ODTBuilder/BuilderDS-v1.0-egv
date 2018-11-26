@@ -30,11 +30,9 @@ C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsb
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\locale\UrlLocaleResolver.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigFeatureServiceImpl.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\repository\remote\PingRemoteRepository.java
-C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\exception\ValidationAuthException.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigRepositoryInit.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigCommitter.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geoserver\data\tree\factory\DTGeoserverTreeFactory.java
-C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\handler\UserLoginFailureEventHandler.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geolayer\data\DTGeoLayerList.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\controller\GeogigGeoserverController.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\geoserver\ListGeoserverLayer.java
@@ -56,7 +54,6 @@ C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsb
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\net\ProxyServer.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\type\geoserver\parser\GeoLayerCollectionParser.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\repository\FetchRepository.java
-C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\handler\UserLoginSuccessEventHandler.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigTransactionService.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigTreeBuilderServiceImpl.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\user\service\UserService.java
@@ -73,7 +70,6 @@ C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsb
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geoserver\factory\impl\DTGeoserverFactoryImpl.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geoserver\service\wms\WMSGetLegendGraphic.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigGeoserverServiceImpl.java
-C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\security\LoginUser.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigFetch.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geoserver\service\wfs\WFSLockFeature.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\locale\UrlLocaleInterceptor.java
@@ -117,7 +113,6 @@ C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qapr
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geoserver\controller\GeoserverController.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigGeoserverDataStore.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\repository\feature\RevertFeature.java
-C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\security\service\LoginUserDetailsService.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\geoserver\PublishGeoserverLayer.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigCheckout.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\upload\service\FileUploadService.java
@@ -130,12 +125,12 @@ C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsb
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigTransactionServiceImpl.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\geoserver\GeoserverLayerType.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\repository\AddRepository.java
+C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\LoginCheckFilter.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\controller\GeogigRepositoryController.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\fileread\FileMeta.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\repository\ConfigRepository.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigRepositoryService.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigTreeBuilderService.java
-C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\config\SecurityConfig.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\fileread\en\EnFileFormat.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geoserver\service\GeoserverServiceImpl.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigGeoserverLayer.java
@@ -150,7 +145,6 @@ C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsb
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigCommit.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigBlame.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\type\GeogigGeoserverDataStoreList.java
-C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\common\handler\UserLogoutSuccessHandler.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\type\geoserver\collection\GeoLayerCollection.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\qaproducer\geogig\service\GeogigGeoserverService.java
 C:\Users\i\Documents\BuilderDS-v1.0-egv\EgovOpenGDSDS\src\main\java\com\git\gdsbuilder\geogig\command\repository\ListRepository.java

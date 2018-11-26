@@ -40,7 +40,7 @@ public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implem
 			throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		BeginTransaction begin = new BeginTransaction();
@@ -68,7 +68,7 @@ public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implem
 			throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		EndTransaction end = new EndTransaction();
@@ -100,7 +100,7 @@ public class GeogigTransactionServiceImpl extends EgovAbstractServiceImpl implem
 			String transactionId) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		EndTransaction end = new EndTransaction();

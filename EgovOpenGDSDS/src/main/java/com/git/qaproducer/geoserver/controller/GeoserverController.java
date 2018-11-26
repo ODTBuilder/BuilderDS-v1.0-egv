@@ -18,7 +18,6 @@
 package com.git.qaproducer.geoserver.controller;
 
 import java.io.IOException;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,6 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,10 +43,11 @@ import com.git.gdsbuilder.geolayer.data.DTGeoGroupLayerList;
 import com.git.gdsbuilder.geolayer.data.DTGeoLayerList;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
 import com.git.gdsbuilder.geoserver.data.DTGeoserverManagerList;
-import com.git.qaproducer.common.security.LoginUser;
 import com.git.qaproducer.controller.AbstractController;
 import com.git.qaproducer.geoserver.service.GeoserverLayerProxyService;
 import com.git.qaproducer.geoserver.service.GeoserverService;
+import com.git.qaproducer.user.domain.User;
+import com.git.qaproducer.user.domain.User.EnUserType;
 
 /**
  * @ClassName: GeoserverController
@@ -70,11 +69,9 @@ public class GeoserverController extends AbstractController {
 
 	@RequestMapping(value = "/addGeoserver.ajax", method = RequestMethod.POST)
 	@ResponseBody
-	public int addGeoserver(HttpServletRequest request, HttpServletResponse response, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public int addGeoserver(HttpServletRequest request, HttpServletResponse response) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		return super.addGeoserverToSession(request, loginUser);
@@ -82,11 +79,9 @@ public class GeoserverController extends AbstractController {
 	
 	@RequestMapping(value = "/removeGeoserver.ajax", method = RequestMethod.POST)
 	@ResponseBody
-	public int removeGeoserver(HttpServletRequest request, HttpServletResponse response, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public int removeGeoserver(HttpServletRequest request, HttpServletResponse response) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		return super.removeGeoserverToSession(request, loginUser);
@@ -104,13 +99,11 @@ public class GeoserverController extends AbstractController {
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@RequestMapping(value = "/getGeolayerCollectionTree.ajax")
 	@ResponseBody
-	public JSONArray getGeolayerCollectionTree(HttpServletRequest request, Principal principal, @RequestParam(value = "node", required = false) String parent,
+	public JSONArray getGeolayerCollectionTree(HttpServletRequest request, @RequestParam(value = "node", required = false) String parent,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "serverName", required = false) String serverName) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		DTGeoserverManagerList sessionGMList = super.getGeoserverManagersToSession(request, loginUser);
@@ -129,11 +122,9 @@ public class GeoserverController extends AbstractController {
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@RequestMapping(value = "/getGeolayerCollectionTrees.ajax")
 	@ResponseBody
-	public JSONArray getGeolayerCollectionTrees(HttpServletRequest request, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public JSONArray getGeolayerCollectionTrees(HttpServletRequest request) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		DTGeoserverManagerList sessionGMList = super.getGeoserverManagersToSession(request, loginUser);
@@ -153,11 +144,9 @@ public class GeoserverController extends AbstractController {
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@RequestMapping(value = "/geoserverWFSTransaction.ajax", method = RequestMethod.POST)
 	@ResponseBody
-	public String geoserverWFSTransaction(HttpServletRequest request, @RequestBody JSONObject jsonObject, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public String geoserverWFSTransaction(HttpServletRequest request, @RequestBody JSONObject jsonObject) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = (String) jsonObject.get("serverName");
@@ -179,13 +168,10 @@ public class GeoserverController extends AbstractController {
 	@SuppressWarnings({ "unchecked", "static-access" })
 	@RequestMapping(value = "/updateLayer.ajax", method = RequestMethod.POST)
 	@ResponseBody
-	public boolean updateLayer(HttpServletRequest request, HttpServletResponse response, @RequestBody JSONObject jsonObject, Principal principal) throws IOException {
+	public boolean updateLayer(HttpServletRequest request, HttpServletResponse response, @RequestBody JSONObject jsonObject) throws IOException {
 		boolean flag = false;
-		
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = (String) jsonObject.get("serverName");
@@ -225,12 +211,10 @@ public class GeoserverController extends AbstractController {
 	 */
 	@RequestMapping(value = "geoserverWMSGetMap.ajax", method = RequestMethod.GET)
 	@ResponseBody
-	public void geoserverGetWMSGetMap(HttpServletRequest request, HttpServletResponse response, Principal principal)
+	public void geoserverGetWMSGetMap(HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = (String) request.getParameter("serverName");
@@ -257,12 +241,10 @@ public class GeoserverController extends AbstractController {
 	 * */
 	@RequestMapping(value = "geoserverWFSGetFeature.ajax", method = RequestMethod.GET)
 	@ResponseBody
-	public void geoserverGetWFSGetFeature(HttpServletRequest request, HttpServletResponse response, Principal principal)
+	public void geoserverGetWFSGetFeature(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, Exception{
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = (String) request.getParameter("serverName");
@@ -289,12 +271,10 @@ public class GeoserverController extends AbstractController {
 	 * */
 	@RequestMapping(value = "geoserverWMSGetFeatureInfo.ajax", method = RequestMethod.GET)
 	@ResponseBody
-	public void geoserverWMSGetFeatureInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody JSONObject jsonObject, Principal principal)
+	public void geoserverWMSGetFeatureInfo(HttpServletRequest request, HttpServletResponse response, @RequestBody JSONObject jsonObject)
 			throws ServletException, IOException{
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = (String) request.getParameter("serverName");
@@ -321,12 +301,10 @@ public class GeoserverController extends AbstractController {
 	 * */
 	@RequestMapping(value = "geoserverWMSGetLegendGraphic.ajax")
 	@ResponseBody
-	public void geoserverWMSGetLegendGraphic(HttpServletRequest request, HttpServletResponse response, Principal principal)
+	public void geoserverWMSGetLegendGraphic(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException{
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = request.getParameter("serverName");
@@ -355,12 +333,10 @@ public class GeoserverController extends AbstractController {
 	 * */
 	@RequestMapping(value = "getDTGeoserverInfo.ajax")
 	@ResponseBody
-	public void getDTGeoserverInfo(HttpServletRequest request, HttpServletResponse response, Principal principal)
+	public void getDTGeoserverInfo(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, Exception{
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = request.getParameter("serverName");
@@ -387,11 +363,9 @@ public class GeoserverController extends AbstractController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "getGeoLayerInfoList.ajax")
 	@ResponseBody
-	public DTGeoLayerList getGeoLayerList(HttpServletRequest request, @RequestBody JSONObject jsonObject, Principal principal) throws Exception{
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public DTGeoLayerList getGeoLayerList(HttpServletRequest request, @RequestBody JSONObject jsonObject) throws Exception{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		List<String> geoLayerList = new ArrayList<String>();
@@ -422,11 +396,9 @@ public class GeoserverController extends AbstractController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "layerDuplicateCheck.ajax")
 	@ResponseBody
-	public JSONObject duplicateCheck(HttpServletRequest request, @RequestBody JSONObject jsonObject, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public JSONObject duplicateCheck(HttpServletRequest request, @RequestBody JSONObject jsonObject) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		List<String> layerList = new ArrayList<String>();
@@ -458,13 +430,10 @@ public class GeoserverController extends AbstractController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "geoserverRemoveLayers.ajax")
 	@ResponseBody
-	public int geoserverRemoveLayers(HttpServletRequest request, @RequestBody JSONObject jsonObject, Principal principal){
+	public int geoserverRemoveLayers(HttpServletRequest request, @RequestBody JSONObject jsonObject){
 		int resultFlag = 500;
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
-			resultFlag = 600; 
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		List<String> layerList = new ArrayList<String>();
@@ -494,11 +463,9 @@ public class GeoserverController extends AbstractController {
 	@RequestMapping(value = "getGeoGroupLayerInfoList.ajax")
 	@ResponseBody
 	public DTGeoGroupLayerList getGeoGroupLayerInfoList(HttpServletRequest request,
-			@RequestBody JSONObject jsonObject, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+			@RequestBody JSONObject jsonObject) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		List<String> geoLayerList = new ArrayList<String>();
@@ -519,11 +486,9 @@ public class GeoserverController extends AbstractController {
 	
 	@RequestMapping(value = "publishGeoserverStyle.ajax")
 	@ResponseBody
-	public void publishGeoserverStyle(HttpServletRequest request, @RequestBody JSONObject jsonObject, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public void publishGeoserverStyle(HttpServletRequest request, @RequestBody JSONObject jsonObject) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String sldBody = (String) jsonObject.get("sldBody");
@@ -538,11 +503,9 @@ public class GeoserverController extends AbstractController {
 
 	@RequestMapping(value = "updateGeoserverStyle.ajax")
 	@ResponseBody
-	public void updateGeoserverStyle(HttpServletRequest request, @RequestBody JSONObject jsonObject, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public void updateGeoserverStyle(HttpServletRequest request, @RequestBody JSONObject jsonObject) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String sldBody = (String) jsonObject.get("sldBody");
@@ -556,11 +519,9 @@ public class GeoserverController extends AbstractController {
 
 	@RequestMapping(value = "removeGeoserverStyle.ajax")
 	@ResponseBody
-	public void removeGeoserverStyle(HttpServletRequest request, @RequestBody JSONObject jsonObject, Principal principal) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public void removeGeoserverStyle(HttpServletRequest request, @RequestBody JSONObject jsonObject) {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String name = (String) jsonObject.get("name");
@@ -573,14 +534,12 @@ public class GeoserverController extends AbstractController {
 	
 	@RequestMapping(value = "/getLayerStyleSld.ajax")
 	@ResponseBody
-	public String getLayerStyleSld(HttpServletRequest request, Principal principal, 
+	public String getLayerStyleSld(HttpServletRequest request, 
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "workspace", required = false) String workspace,
 			@RequestParam(value = "layerName", required = false) String layerName) {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		DTGeoserverManager dtGeoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
@@ -589,12 +548,9 @@ public class GeoserverController extends AbstractController {
 	
 	
 	@RequestMapping(value = "/upload.do", method = RequestMethod.POST)
-	public void uploadProcess(MultipartHttpServletRequest request, HttpServletResponse response,
-			Principal principal) throws Exception {
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}else{
+	public void uploadProcess(MultipartHttpServletRequest request, HttpServletResponse response) throws Exception {
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
+		if(loginUser==null){
 			throw new NullPointerException("로그인 세션이 존재하지 않습니다.");
 		}
 		String serverName = (String) request.getParameter("serverName");

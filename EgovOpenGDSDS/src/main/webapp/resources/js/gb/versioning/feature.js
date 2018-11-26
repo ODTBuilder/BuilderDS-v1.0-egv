@@ -228,8 +228,10 @@ gb.versioning.Feature.prototype.loadFeatureHistory = function(server, repo, path
 						var repo = that.getRepo();
 						var path = that.getPath();
 						// var nidx = parseInt($(this).attr("idx"));
-						var nidx = 0;
-						var oidx = parseInt($(this).attr("idx"));
+						// var nidx = 0;
+						// var oidx = parseInt($(this).attr("idx"));
+						var oidx = $(this).val();
+						var nidx = $(that.getTBody()).find(".gb-versioning-feature-tr").first().find(".gb-button").val();
 						// var oidx =
 						// $(that.getTBody()).find(".gb-versioning-feature-tr").last().find(".gb-button").attr("idx");
 						that.openDetailChanges(geoserver, repo, path, nidx, oidx);
@@ -375,8 +377,8 @@ gb.versioning.Feature.prototype.openDetailChanges = function(server, repo, path,
 		"serverName" : server,
 		"repoName" : repo,
 		"path" : path,
-		"newIndex" : nidx,
-		"oldIndex" : oidx
+		"newCommitId" : nidx,
+		"oldCommitId" : oidx
 	}
 
 	var tranURL = this.getFeatureDiffURL();
@@ -415,17 +417,17 @@ gb.versioning.Feature.prototype.openDetailChanges = function(server, repo, path,
 							}
 							console.log(oldParams);
 
-							var tranURL = that.getCatFeatureObjectURL();
-							if (tranURL.indexOf("?") !== -1) {
-								tranURL += "&";
-								tranURL += jQuery.param(oldParams);
+							var oldURL = that.getCatFeatureObjectURL();
+							if (oldURL.indexOf("?") !== -1) {
+								oldURL += "&";
+								oldURL += jQuery.param(oldParams);
 							} else {
-								tranURL += "?";
-								tranURL += jQuery.param(oldParams);
+								oldURL += "?";
+								oldURL += jQuery.param(oldParams);
 							}
 
 							$.ajax({
-								url : tranURL,
+								url : oldURL,
 								method : "POST",
 								contentType : "application/json; charset=UTF-8",
 								beforeSend : function() {
@@ -521,17 +523,17 @@ gb.versioning.Feature.prototype.openDetailChanges = function(server, repo, path,
 							}
 							console.log(newParams);
 
-							var tranURL2 = that.getCatFeatureObjectURL();
-							if (tranURL2.indexOf("?") !== -1) {
-								tranURL2 += "&";
-								tranURL2 += jQuery.param(newParams);
+							var newURL = that.getCatFeatureObjectURL();
+							if (newURL.indexOf("?") !== -1) {
+								newURL += "&";
+								newURL += jQuery.param(newParams);
 							} else {
-								tranURL2 += "?";
-								tranURL2 += jQuery.param(newParams);
+								newURL += "?";
+								newURL += jQuery.param(newParams);
 							}
 
 							$.ajax({
-								url : tranURL2,
+								url : newURL,
 								method : "POST",
 								contentType : "application/json; charset=UTF-8",
 								beforeSend : function() {

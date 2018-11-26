@@ -31,7 +31,7 @@ import com.git.gdsbuilder.geogig.type.GeogigRepositoryLog.Commit;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryLog.Commit.ChangeType;
 import com.git.gdsbuilder.geogig.type.GeogigTransaction;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
-import com.git.qaproducer.common.security.LoginUser;
+import com.git.qaproducer.user.domain.User;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -39,25 +39,24 @@ import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements GeogigFeatureService {
 
 	@Override
-	public GeogigDiff featureDiff(DTGeoserverManager geoserverManager, String repoName, String path, int newIndex,
-			int oldIndex) throws JAXBException {
+	public GeogigDiff featureDiff(DTGeoserverManager geoserverManager, String repoName, String path, String newCommitId,
+			String oldCommitId) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
-		String oldTreeish = "HEAD";
-		String newTreeish = "HEAD";
-
-//		if (newIndex > 0) {
-//			newTreeish += "~" + newIndex;
+//		String oldTreeish = "HEAD";
+//		String newTreeish = "HEAD";
+//
+//		if (oldIndex != 0) {
+//			oldTreeish += "~" + oldIndex;
 //		}
-		oldTreeish += "~" + oldIndex;
 
 		DiffRepository diffRepos = new DiffRepository();
 		GeogigDiff geogigDiff = null;
 		try {
-			geogigDiff = diffRepos.executeCommand(url, user, pw, repoName, oldTreeish, newTreeish, path, null);
+			geogigDiff = diffRepos.executeCommand(url, user, pw, repoName, newCommitId, oldCommitId, path, null);
 		} catch (GeogigCommandException e) {
 			JAXBContext jaxbContext = JAXBContext.newInstance(GeogigDiff.class);
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
@@ -71,7 +70,7 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 			throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		FeatureBlame featureBlame = new FeatureBlame();
@@ -91,7 +90,7 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 			int limit, String until, String head, int index) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		LogRepository logRepos = new LogRepository();
@@ -155,14 +154,14 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 
 	@Override
 	public GeogigFeatureRevert featureRevert(DTGeoserverManager geoserverManager, String repoName, String path,
-			String oldCommitId, String newCommitId, String commitMessage, String mergeMessage, LoginUser loginUser)
+			String oldCommitId, String newCommitId, String commitMessage, String mergeMessage, User loginUser)
 			throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
-		String authorName = loginUser.getUsername();
+		String authorName = loginUser.getUid();
 		String authorEmail = loginUser.getEmail();
 
 		RevertFeature revertFeature = new RevertFeature();
@@ -186,5 +185,4 @@ public class GeogigFeatureServiceImpl extends EgovAbstractServiceImpl implements
 		}
 		return geogigFeatureRevert;
 	}
-
 }

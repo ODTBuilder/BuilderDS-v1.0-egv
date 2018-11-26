@@ -1,6 +1,30 @@
 package com.git.qaproducer.user.domain;
 
 public class User {
+	public enum EnUserType {
+		GENERAL("general");
+
+		private final String typeName;
+
+		private EnUserType(String typeName) {
+			this.typeName = typeName;
+		}
+
+		public static EnUserType get(String typeName) {
+			for (EnUserType type : values()) {
+				if(type.typeName.equals(typeName))
+					return type;
+			}
+			return null;
+		}
+		
+		
+		public String getTypeName(){
+			return this.typeName;
+		}
+	};
+	
+	
 	private int idx;
 	private String uid;
 	private String pw;

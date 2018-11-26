@@ -48,7 +48,7 @@ public class GeogigGeoserverServiceImpl extends EgovAbstractServiceImpl implemen
 	public JSONObject getDataStoreList(DTGeoserverManager geoserverManager, String repoName, String branchName) {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		JSONObject dsListObj = new JSONObject();
@@ -114,7 +114,7 @@ public class GeogigGeoserverServiceImpl extends EgovAbstractServiceImpl implemen
 			String datastore, String layer, String repoName, String branchName) {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		// get crs
@@ -156,7 +156,7 @@ public class GeogigGeoserverServiceImpl extends EgovAbstractServiceImpl implemen
 	public JSONArray listGeoserverLayer(DTGeoserverManager geoserverManager, String workspace, String datastore) {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		JSONArray layerArr = new JSONArray();

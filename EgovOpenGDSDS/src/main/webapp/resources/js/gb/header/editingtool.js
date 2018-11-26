@@ -2417,6 +2417,7 @@ gb.header.EditingTool.prototype.editToolToggle = function(){
 		this.setActiveTool(false);
 		this.setVisibleWMS(true);
 		this.setVisibleWFS(false);
+		this.displayEditZoomHint(false);
 		this.deactiveAnotherInteraction(this.interaction.select);
 		this.deactiveAllBtn_();
 	} else {
@@ -2433,58 +2434,56 @@ gb.header.EditingTool.prototype.editToolToggle = function(){
 
 // hochul
 gb.header.EditingTool.prototype.displayEditZoomHint = function(bool){
-	if(this.getActiveTool()){
-		if(bool){
-			if(this.headerTag.find(".edit-zoom-hint").length === 0){
-				this.ulTagLeft.css("display", "none");
+	if(bool){
+		if(this.headerTag.find(".edit-zoom-hint").length === 0){
+			this.ulTagLeft.css("display", "none");
 
-				var editZoomHintTag = $("<h1 class='edit-zoom-hint'>");
-				var icon = $("<span>").html("<i class='fas fa-exclamation-circle'></i>");
-				var text = $("<span>").html("Zoom in to edit");
+			var editZoomHintTag = $("<h1 class='edit-zoom-hint'>");
+			var icon = $("<span>").html("<i class='fas fa-exclamation-circle'></i>");
+			var text = $("<span>").html("Zoom in to edit");
 
-				editZoomHintTag.css("margin-top", "6px");
-				editZoomHintTag.css("padding-left", "6px");
-				editZoomHintTag.css("display", "inline-block");
+			editZoomHintTag.css("margin-top", "6px");
+			editZoomHintTag.css("padding-left", "6px");
+			editZoomHintTag.css("display", "inline-block");
 
-				editZoomHintTag.append(icon);
-				editZoomHintTag.append(text);
-				this.headerTag.append(editZoomHintTag);
-				
-				var that = this;
-				var icon = $("<i class='fas fa-plus'>");
-				var span = $("<span class='label'>").append(icon).append("편집하시려면 확대해주세요");
-				
-				var btn = $("<button class='zoom-in'>").css({
-					"margin": "auto",
-					"width": "300px",
-					"height": "70px",
-					"font-size": "150%",
-					"border-radius": "8px",
-					"background": "rgba(0,0,0,0.5)",
-					"color": "#fff"
-				}).append(span).click(function(){
-					var view = that.map.getView();
-					view.setZoom(12);
-				});
-				
-				var notice = $("<div id='zoomNotice' class='notice'>").css({
-					"position": "absolute",
-					"top": "50%",
-					"left": "0",
-					"right": "0",
-					"text-align": "center",
-					"z-index": "2"
-				}).append(btn);
-				
-				this.targetElement.append(notice);
-			}
-
-			this.deactiveAnotherInteraction();
-		} else {
-			$("#zoomNotice").remove();
-			this.headerTag.find(".edit-zoom-hint").remove();
-			this.ulTagLeft.css("display", "inline-block");
+			editZoomHintTag.append(icon);
+			editZoomHintTag.append(text);
+			this.headerTag.append(editZoomHintTag);
+			
+			var that = this;
+			var icon = $("<i class='fas fa-plus'>");
+			var span = $("<span class='label'>").append(icon).append("편집하시려면 확대해주세요");
+			
+			var btn = $("<button class='zoom-in'>").css({
+				"margin": "auto",
+				"width": "300px",
+				"height": "70px",
+				"font-size": "150%",
+				"border-radius": "8px",
+				"background": "rgba(0,0,0,0.5)",
+				"color": "#fff"
+			}).append(span).click(function(){
+				var view = that.map.getView();
+				view.setZoom(12);
+			});
+			
+			var notice = $("<div id='zoomNotice' class='notice'>").css({
+				"position": "absolute",
+				"top": "50%",
+				"left": "0",
+				"right": "0",
+				"text-align": "center",
+				"z-index": "2"
+			}).append(btn);
+			
+			this.targetElement.append(notice);
 		}
+
+		this.deactiveAnotherInteraction();
+	} else {
+		$("#zoomNotice").remove();
+		this.headerTag.find(".edit-zoom-hint").remove();
+		this.ulTagLeft.css("display", "inline-block");
 	}
 }
 

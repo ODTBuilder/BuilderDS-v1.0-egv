@@ -16,5 +16,5 @@ public interface GeoserverLayerProxyService {
 	public void requestWMSGetLegendGraphic(DTGeoserverManager dtGeoManager, String workspace, HttpServletRequest request, HttpServletResponse response) throws IOException;
 	public void requestGeoserverInfo(DTGeoserverManager dtGeoManager, HttpServletRequest request, HttpServletResponse response) throws IOException;
 	
-//	public void requestGeoserverDataOutput(LoginUser userVO, DTGeoserverManager dtGeoManager, HttpServletRequest request, HttpServletResponse response);
+//	public void requestGeoserverDataOutput(User userVO, DTGeoserverManager dtGeoManager, HttpServletRequest request, HttpServletResponse response);
 }

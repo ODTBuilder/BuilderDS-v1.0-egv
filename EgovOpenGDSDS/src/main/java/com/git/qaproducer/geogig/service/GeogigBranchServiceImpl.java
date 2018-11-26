@@ -52,7 +52,7 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 			String reference) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		CheckoutBranch checkoutBranch = new CheckoutBranch();
@@ -81,7 +81,7 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 			String transactionId, String branchName) {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		StatusRepository stausCommand = new StatusRepository();
@@ -150,7 +150,7 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 			String source) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		CreateBranch create = new CreateBranch();
@@ -175,7 +175,7 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 	public GeogigBranch listBranch(DTGeoserverManager geoserverManager, String repoName) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		ListBranch list = new ListBranch();
@@ -203,7 +203,7 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 			String branchName) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		MergeBranch merge = new MergeBranch();
@@ -231,7 +231,7 @@ public class GeogigBranchServiceImpl extends EgovAbstractServiceImpl implements 
 			String transactionId, JSONArray featureArr) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		CheckoutBranch checkout = new CheckoutBranch();

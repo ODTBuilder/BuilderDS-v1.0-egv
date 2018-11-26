@@ -3,8 +3,6 @@
  */
 package com.git.qaproducer.geogig.controller;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBException;
 
@@ -24,9 +22,10 @@ import com.git.gdsbuilder.geogig.type.GeogigRemoteRepository;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryDelete;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryInit;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
-import com.git.qaproducer.common.security.LoginUser;
 import com.git.qaproducer.controller.AbstractController;
 import com.git.qaproducer.geogig.service.GeogigRepositoryService;
+import com.git.qaproducer.user.domain.User;
+import com.git.qaproducer.user.domain.User.EnUserType;
 
 /**
  * @author GIT
@@ -42,7 +41,7 @@ public class GeogigRepositoryController extends AbstractController {
 
 	@RequestMapping(value = "/initRepository.do", method = RequestMethod.POST)
 	@ResponseBody
-	public GeogigRepositoryInit initRepository(HttpServletRequest request, Principal principal,
+	public GeogigRepositoryInit initRepository(HttpServletRequest request,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "dbHost", required = false) String dbHost,
@@ -54,10 +53,7 @@ public class GeogigRepositoryController extends AbstractController {
 			@RequestParam(value = "remoteName", required = false) String remoteName,
 			@RequestParam(value = "remoteURL", required = false) String remoteURL) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.initRepository(geoserverManager, loginUser, repoName, dbHost, dbPort, dbName, dbSchema,
 				dbUser, dbPassword, remoteName, remoteURL);
@@ -66,14 +62,10 @@ public class GeogigRepositoryController extends AbstractController {
 	@RequestMapping(value = "/deleteRepository.do", method = RequestMethod.POST)
 	@ResponseBody
 	public GeogigRepositoryDelete initRepository(HttpServletRequest request,
-			Principal principal,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.deleteRepository(geoserverManager, repoName);
 	}
@@ -81,15 +73,11 @@ public class GeogigRepositoryController extends AbstractController {
 	@RequestMapping(value = "/listRemoteRepository.do", method = RequestMethod.POST)
 	@ResponseBody
 	public GeogigRemoteRepository listRemoteRepository(HttpServletRequest request,
-			Principal principal,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "verbose", required = false) Boolean verbose) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.listRemoteRepository(geoserverManager, repoName, verbose);
 	}
@@ -97,16 +85,12 @@ public class GeogigRepositoryController extends AbstractController {
 	@RequestMapping(value = "/addRemoteRepository.do", method = RequestMethod.POST)
 	@ResponseBody
 	public GeogigRemoteRepository addRemoteRepository(HttpServletRequest request,
-			Principal principal,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "remoteName", required = false) String remoteName,
 			@RequestParam(value = "remoteURL", required = false) String remoteURL) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.addRemoteRepository(geoserverManager, repoName, remoteName, remoteURL, loginUser);
 	}
@@ -114,15 +98,11 @@ public class GeogigRepositoryController extends AbstractController {
 	@RequestMapping(value = "/removeRemoteRepository.do", method = RequestMethod.POST)
 	@ResponseBody
 	public GeogigRemoteRepository removeRemoteRepository(HttpServletRequest request,
-			Principal principal,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "remoteName", required = false) String remoteName) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.removeRemoteRepository(geoserverManager, repoName, remoteName);
 	}
@@ -130,22 +110,18 @@ public class GeogigRepositoryController extends AbstractController {
 	@RequestMapping(value = "/pingRemoteRepository.do", method = RequestMethod.POST)
 	@ResponseBody
 	public GeogigRemoteRepository pingRemoteRepository(HttpServletRequest request,
-			Principal principal,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "remoteName", required = false) String remoteName) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.pingRemoteRepository(geoserverManager, repoName, remoteName);
 	}
 
 	@RequestMapping(value = "/pullRepository.do", method = RequestMethod.POST)
 	@ResponseBody
-	public GeogigPull pullRepository(HttpServletRequest request, Principal principal,
+	public GeogigPull pullRepository(HttpServletRequest request,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "branchName", required = false) String branchName,
@@ -153,10 +129,7 @@ public class GeogigRepositoryController extends AbstractController {
 			@RequestParam(value = "remoteBranchName", required = false) String remoteBranchName,
 			@RequestParam(value = "transactionId", required = false) String transactionId) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.pullRepository(geoserverManager, repoName, transactionId, remoteName, branchName,
 				remoteBranchName, loginUser);
@@ -164,33 +137,26 @@ public class GeogigRepositoryController extends AbstractController {
 
 	@RequestMapping(value = "/pushRepository.do", method = RequestMethod.POST)
 	@ResponseBody
-	public GeogigPush pushRepository(HttpServletRequest request, Principal principal,
+	public GeogigPush pushRepository(HttpServletRequest request,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName,
 			@RequestParam(value = "branchName", required = false) String branchName,
 			@RequestParam(value = "remoteName", required = false) String remoteName,
 			@RequestParam(value = "remoteBranchName", required = false) String remoteBranchName) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.pushRepository(geoserverManager, repoName, remoteName, branchName, remoteBranchName);
 	}
 
 	@RequestMapping(value = "/fetchRepository.do", method = RequestMethod.POST)
 	@ResponseBody
-	public GeogigFetch fetchRepository(HttpServletRequest request, Principal principal,
+	public GeogigFetch fetchRepository(HttpServletRequest request,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "repoName", required = false) String repoName) throws JAXBException {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		DTGeoserverManager geoserverManager = super.getGeoserverManagerToSession(request, loginUser, serverName);
 		return reposService.fetchRepository(geoserverManager, repoName);
 	}
-
 }

@@ -35,7 +35,7 @@ import com.git.gdsbuilder.geogig.type.GeogigRepositoryDelete;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryInit;
 import com.git.gdsbuilder.geogig.type.GeogigTransaction;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
-import com.git.qaproducer.common.security.LoginUser;
+import com.git.qaproducer.user.domain.User;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -52,20 +52,20 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * @see
 	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#initRepository(
 	 * com.git.gdsbuilder.geoserver.DTGeoserverManager,
-	 * com.git.qaproducer.common.security.LoginUser, java.lang.String,
+	 * com.git.qaproducer.common.security.User, java.lang.String,
 	 * java.lang.String, java.lang.String, java.lang.String, java.lang.String,
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public GeogigRepositoryInit initRepository(DTGeoserverManager geoserverManager, LoginUser loginUser,
+	public GeogigRepositoryInit initRepository(DTGeoserverManager geoserverManager, User loginUser,
 			String repoName, String dbHost, String dbPort, String dbName, String dbSchema, String dbUser,
 			String dbPassword, String remoteName, String remoteURL) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
-		String authorName = loginUser.getUsername();
+		String authorName = loginUser.getUid();
 		String authorEmail = loginUser.getEmail();
 
 		InitRepository initRepos = new InitRepository();
@@ -123,7 +123,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 			throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		DeleteRepository deleteReops = new DeleteRepository();
@@ -153,7 +153,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 			throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		AddRepository addRepos = new AddRepository();
@@ -175,17 +175,17 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 * com.git.qaproducer.geogig.service.GeogigRepositoryService#commitRepository
 	 * (com.git.gdsbuilder.geoserver.DTGeoserverManager, java.lang.String,
 	 * java.lang.String, java.lang.String,
-	 * com.git.qaproducer.common.security.LoginUser)
+	 * com.git.qaproducer.common.security.User)
 	 */
 	@Override
 	public GeogigCommit commitRepository(DTGeoserverManager geoserverManager, String repoName, String transactionId,
-			String message, LoginUser loginUser) throws JAXBException {
+			String message, User loginUser) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
-		String authorName = loginUser.getUsername();
+		String authorName = loginUser.getUid();
 		String authorEmail = loginUser.getEmail();
 
 		CommitRepository commitRepos = new CommitRepository();
@@ -214,7 +214,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 			Boolean verbose) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		ListRemoteRepository list = new ListRemoteRepository();
@@ -238,10 +238,10 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public GeogigRemoteRepository addRemoteRepository(DTGeoserverManager geoserverManager, String repoName,
-			String remoteName, String remoteURL, LoginUser loginUser) throws JAXBException {
+			String remoteName, String remoteURL, User loginUser) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		AddRemoteRepository add = new AddRemoteRepository();
@@ -252,7 +252,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 			GeogigTransaction transaction = begin.executeCommand(url, user, pw, repoName);
 
 			String transactionId = transaction.getTransaction().getId();
-			String authorName = loginUser.getUsername();
+			String authorName = loginUser.getUid();
 			String authorEmail = loginUser.getEmail();
 
 			// master pull
@@ -287,7 +287,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 			String remoteName) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		RemoveRemoteRepository remove = new RemoveRemoteRepository();
@@ -314,7 +314,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 			String remoteName) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		PingRemoteRepository ping = new PingRemoteRepository();
@@ -340,13 +340,13 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public GeogigPull pullRepository(DTGeoserverManager geoserverManager, String repoName, String transactionId,
-			String remoteName, String branchName, String remoteBranchName, LoginUser loginUser) throws JAXBException {
+			String remoteName, String branchName, String remoteBranchName, User loginUser) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
-		String authorName = loginUser.getUsername();
+		String authorName = loginUser.getUid();
 		String authorEmail = loginUser.getEmail();
 
 		PullRepository pull = new PullRepository();
@@ -375,7 +375,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 			String branchName, String remoteBranchName) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		PushRepository push = new PushRepository();
@@ -401,7 +401,7 @@ public class GeogigRepositoryServiceImple extends EgovAbstractServiceImpl implem
 	public GeogigFetch fetchRepository(DTGeoserverManager geoserverManager, String repoName) throws JAXBException {
 
 //		String url = geoserverManager.getRestURL();
-//		String user = geoserverManager.getUsername();
+//		String user = geoserverManager.getUid();
 //		String pw = geoserverManager.getPassword();
 //
 //		FetchRepository fetch = new FetchRepository();

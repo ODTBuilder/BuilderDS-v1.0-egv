@@ -43,7 +43,7 @@ public class DTGeoserverManager extends GeoServerRESTManager {
 		return restURL;
 	}
 
-	public String getUsername() {
+	public String getUid() {
 		return username;
 	}
 

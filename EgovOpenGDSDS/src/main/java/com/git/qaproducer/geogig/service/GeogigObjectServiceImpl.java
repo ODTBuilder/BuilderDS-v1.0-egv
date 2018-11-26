@@ -40,7 +40,7 @@ public class GeogigObjectServiceImpl extends EgovAbstractServiceImpl implements 
 			throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		CatObject catObj = new CatObject();
@@ -60,7 +60,7 @@ public class GeogigObjectServiceImpl extends EgovAbstractServiceImpl implements 
 			String path, String commitId, String featureId) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		String[] ids = path.split("/");
@@ -111,7 +111,7 @@ public class GeogigObjectServiceImpl extends EgovAbstractServiceImpl implements 
 			String objectid) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		String[] ids = path.split("/");

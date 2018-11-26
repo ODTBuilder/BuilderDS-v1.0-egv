@@ -7,7 +7,6 @@ import javax.xml.bind.JAXBException;
 
 import com.git.gdsbuilder.geogig.type.GeogigAdd;
 import com.git.gdsbuilder.geogig.type.GeogigCommit;
-import com.git.gdsbuilder.geogig.type.GeogigDelete;
 import com.git.gdsbuilder.geogig.type.GeogigFetch;
 import com.git.gdsbuilder.geogig.type.GeogigPull;
 import com.git.gdsbuilder.geogig.type.GeogigPush;
@@ -15,7 +14,7 @@ import com.git.gdsbuilder.geogig.type.GeogigRemoteRepository;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryDelete;
 import com.git.gdsbuilder.geogig.type.GeogigRepositoryInit;
 import com.git.gdsbuilder.geoserver.DTGeoserverManager;
-import com.git.qaproducer.common.security.LoginUser;
+import com.git.qaproducer.user.domain.User;
 
 /**
  * @author GIT
@@ -42,7 +41,7 @@ public interface GeogigRepositoryService {
 	 * @throws JAXBException
 	 */
 	GeogigCommit commitRepository(DTGeoserverManager geoserverManager, String repoName, String transactionId,
-			String message, LoginUser loginUser) throws JAXBException;
+			String message, User loginUser) throws JAXBException;
 
 	/**
 	 * @param geoserverManager
@@ -64,7 +63,7 @@ public interface GeogigRepositoryService {
 	 * @throws JAXBException
 	 */
 	GeogigRemoteRepository addRemoteRepository(DTGeoserverManager geoserverManager, String repoName, String remoteName,
-			String remoteURL, LoginUser loginUser) throws JAXBException;
+			String remoteURL, User loginUser) throws JAXBException;
 
 	/**
 	 * @param geoserverManager
@@ -98,7 +97,7 @@ public interface GeogigRepositoryService {
 	 * @throws JAXBException
 	 */
 	GeogigPull pullRepository(DTGeoserverManager geoserverManager, String repoName, String transactionId,
-			String remoteName, String branchName, String remoteBranchName, LoginUser user) throws JAXBException;
+			String remoteName, String branchName, String remoteBranchName, User user) throws JAXBException;
 
 	/**
 	 * @param geoserverManager
@@ -135,7 +134,7 @@ public interface GeogigRepositoryService {
 	 * @return
 	 * @throws JAXBException
 	 */
-	GeogigRepositoryInit initRepository(DTGeoserverManager geoserverManager, LoginUser loginUser, String repoName,
+	GeogigRepositoryInit initRepository(DTGeoserverManager geoserverManager, User loginUser, String repoName,
 			String dbHost, String dbPort, String dbName, String dbSchema, String dbUser, String dbPassword,
 			String remoteName, String remoteURL) throws JAXBException;
 

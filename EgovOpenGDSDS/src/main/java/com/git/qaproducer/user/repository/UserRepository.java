@@ -1,8 +1,9 @@
 package com.git.qaproducer.user.repository;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import com.git.qaproducer.user.domain.User;
@@ -18,7 +19,9 @@ public class UserRepository extends EgovAbstractMapper {
 	private UserMapper userMapper;
 	
 	
-
+	public User loginUserByInfo(Map<String, Object> infoMap) {
+		return userMapper.loginUserByInfo(infoMap);
+	}
 
 	public User retrieveUserById(String uid) {
 		return userMapper.retrieveUserById(uid);

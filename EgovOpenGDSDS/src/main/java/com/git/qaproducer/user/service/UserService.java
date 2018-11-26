@@ -1,8 +1,9 @@
 package com.git.qaproducer.user.service;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,12 @@ public class UserService extends EgovAbstractServiceImpl{
 	@Resource(name="userRepository")
 	private UserRepository userRepository;
 
+	
+	@Transactional(readOnly = true)
+	public User loginUserByInfo(Map<String, Object> infoMap) {
+		return userRepository.loginUserByInfo(infoMap);
+	}
+	
 	@Transactional(readOnly = true)
 	public User retrieveUserById(String uid) {
 		return userRepository.retrieveUserById(uid);

@@ -263,7 +263,7 @@ public class DTGeoserverTree extends JSONArray {
 													dsTree.put("geogigBranch", branchName);
 													ListBranch listBranch = new ListBranch();
 													GeogigBranch geogigBranch = listBranch.executeCommand(
-															dtGeoManager.getRestURL(), dtGeoManager.getUsername(),
+															dtGeoManager.getRestURL(), dtGeoManager.getUid(),
 															dtGeoManager.getPassword(), reposName, false);
 													List<Branch> branchList = geogigBranch.getLocalBranchList();
 													JSONArray branchArr = new JSONArray();

@@ -106,7 +106,7 @@ public class GeogigRepositoryTree extends JSONArray {
 							ListRepository listRepos = new ListRepository();
 							try {
 								GeogigRepository geogigRepo = listRepos.executeCommand(dtGeoManager.getRestURL(),
-										dtGeoManager.getUsername(), dtGeoManager.getPassword());
+										dtGeoManager.getUid(), dtGeoManager.getPassword());
 								List<Repo> repos = geogigRepo.getRepos();
 								if (repos == null) {
 									this.addServer(server, false);
@@ -154,7 +154,7 @@ public class GeogigRepositoryTree extends JSONArray {
 
 		if (param != null && dtGeoserver != null) {
 			String baseURL = dtGeoserver.getRestURL();
-			String username = dtGeoserver.getUsername();
+			String username = dtGeoserver.getUid();
 			String password = dtGeoserver.getPassword();
 
 			if (type == EnGeogigRepositoryTreeType.REPOSITORY) {

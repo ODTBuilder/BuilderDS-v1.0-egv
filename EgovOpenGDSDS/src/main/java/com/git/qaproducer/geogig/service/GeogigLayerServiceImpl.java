@@ -33,7 +33,7 @@ public class GeogigLayerServiceImpl extends EgovAbstractServiceImpl implements G
 //			String limit, String until, String head) throws JAXBException {
 //
 //		String url = geoserverManager.getRestURL();
-//		String user = geoserverManager.getUsername();
+//		String user = geoserverManager.getUid();
 //		String pw = geoserverManager.getPassword();
 //
 //		LogRepository logRepos = new LogRepository();
@@ -53,7 +53,7 @@ public class GeogigLayerServiceImpl extends EgovAbstractServiceImpl implements G
 			String layerName) throws JAXBException {
 
 		String url = geoserverManager.getRestURL();
-		String user = geoserverManager.getUsername();
+		String user = geoserverManager.getUid();
 		String pw = geoserverManager.getPassword();
 
 		String oldTreeish = "HEAD";

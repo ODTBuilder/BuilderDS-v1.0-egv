@@ -3,14 +3,11 @@
  */
 package com.git.qaproducer.geogig.controller;
 
-import java.security.Principal;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,9 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.git.gdsbuilder.geogig.tree.GeogigRemoteRepositoryTree.EnGeogigRemoteRepositoryTreeType;
 import com.git.gdsbuilder.geogig.tree.GeogigRepositoryTree.EnGeogigRepositoryTreeType;
 import com.git.gdsbuilder.geoserver.data.DTGeoserverManagerList;
-import com.git.qaproducer.common.security.LoginUser;
 import com.git.qaproducer.controller.AbstractController;
 import com.git.qaproducer.geogig.service.GeogigTreeBuilderService;
+import com.git.qaproducer.user.domain.User;
+import com.git.qaproducer.user.domain.User.EnUserType;
 
 /**
  * @author GIT
@@ -37,7 +35,7 @@ public class GeogigTreeBuilderController extends AbstractController {
 
 	/**
 	 * @param request       HttpServletRequest
-	 * @param loginUser     LoginUser
+	 * @param loginUser     User
 	 * @param node          node ex) server, server:repository,
 	 *                      server:repository:branch
 	 * @param type          node type
@@ -47,16 +45,13 @@ public class GeogigTreeBuilderController extends AbstractController {
 	 */
 	@RequestMapping(value = "/getWorkingTree.ajax")
 	@ResponseBody
-	public JSONArray getWorkingTree(HttpServletRequest request, Principal principal,
+	public JSONArray getWorkingTree(HttpServletRequest request,
 			@RequestParam(value = "node", required = false) String node,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "transactionId", required = false) String transactionId) {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		EnGeogigRepositoryTreeType enType = null;
 
 		if (type.equals(EnGeogigRepositoryTreeType.SERVER.getType())) {
@@ -86,17 +81,14 @@ public class GeogigTreeBuilderController extends AbstractController {
 	 */
 	@RequestMapping(value = "/getRemoteRepoTree.ajax")
 	@ResponseBody
-	public JSONArray getRemoteRepoTree(HttpServletRequest request, Principal principal,
+	public JSONArray getRemoteRepoTree(HttpServletRequest request,
 			@RequestParam(value = "node", required = false) String node,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "serverName", required = false) String serverName,
 			@RequestParam(value = "local", required = false) String local,
 			@RequestParam(value = "fetch", required = false) boolean fetch) {
 
-		LoginUser loginUser = null;
-		if(principal!=null){
-			loginUser = (LoginUser) ((Authentication) principal).getPrincipal();
-		}
+		User loginUser = (User) getSession(request,EnUserType.GENERAL.getTypeName());
 		
 		EnGeogigRemoteRepositoryTreeType enType = null;
 

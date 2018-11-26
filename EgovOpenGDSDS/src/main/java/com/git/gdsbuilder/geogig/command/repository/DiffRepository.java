@@ -32,7 +32,7 @@ public class DiffRepository {
 	private static final String param_page = "page="; // optional
 
 	public GeogigDiff executeCommand(String baseURL, String username, String password, String repository,
-			String oldObjectId, String newObjectId, String path, Integer page) {
+			String newObjectId, String oldObjectId, String path, Integer page) {
 
 		// restTemplate
 		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
