@@ -25,7 +25,7 @@ BuilderDS-v1.0-egv<br>(공간자료 버저닝편집도구 v1.0 전자정부프�
 - 개발언어	JAVA / java-1.8.0-openjdk-1.8.0.111-3(JAVA 1.8 문제없음)<br>
 -	웹 서버/ 컨테이너	Tomcat / v8.5<br>
 -	웹 프레임워크	전자정부 표준프레임워크 / 3.7.0<br>
--	공간정보 데이터 서버	Geoserver / 2.7.6<br>, Geogig / 1.2.0 , Guava / 23.0.
+-	공간정보 데이터 서버	Geoserver / 2.7.6, Geogig / 1.2.0 , Guava / 23.0.<br>
 -	공간정보 데이터베이스	PostgreSQL / 9.4, PostGIS / 2.1<br>
 - 클라이언트	개발언어	HTML / 5, JavaScript / ECMA 5<br>
 -	웹 프레임워크	jQuery / 2.2.2<br>
